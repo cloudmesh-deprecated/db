@@ -13,7 +13,7 @@ def populate(cloud, _from,_to):
     for i in range(_from, _to):
         t = CloudmeshDatabase.table(cloud=cloud,type="vm")
         vm = t("vm_" + str(i).zfill(3))
-        
+
         cm.add(vm)
 
 populate("openstack", 0,10)

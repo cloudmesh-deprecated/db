@@ -3,7 +3,7 @@ from sqlalchemy import Column, Date, Integer, String
 
 class VM_OPENSTACK(CloudmeshDatabase.Base):
     __tablename__ = "vm_openstack"
-    __cloud__ = "openstack"
+    __category__ = "openstack"
     __type__ = 'vm'
 
     id = Column(Integer, primary_key=True)
@@ -14,7 +14,7 @@ class VM_OPENSTACK(CloudmeshDatabase.Base):
 
 class IMAGE_OPENSTACK(CloudmeshDatabase.Base):
     __tablename__ = "image_openstack"
-    __cloud__ = "openstack"
+    __category__ = "openstack"
     __type__ = 'image'
 
     id = Column(Integer, primary_key=True)

@@ -54,7 +54,7 @@ class CloudmeshDatabase(object):
     def info(cls):
         print ("Info")
         for t in cls.tables:
-            print (t.__cloud__, t.__tablename__)
+            print (t.__category__, t.__tablename__)
 
     @classmethod
     def table(cls, cloud=None, type=None):
@@ -63,7 +63,7 @@ class CloudmeshDatabase(object):
                  In case the table does not exist an exception is thrown
         """
         for t in cls.tables:
-            if (t.__type__ == type) and (t.__cloud__ == cloud):
+            if (t.__type__ == type) and (t.__category__ == cloud):
                 return t
 
         ValueError("ERROR: unkown table {} {}".format(cloud, type))
