@@ -32,7 +32,7 @@ cm1 = CloudmeshDatabase()
 
 # print cm, cm1, cm.session == cm1.session
 
-vm = cm1.find("libcloud", "vm", name="vm_016")
+vm = cm1.find(category="libcloud", kind="vm", name="vm_016")
 
 if vm is not None:
     print(vm.name)

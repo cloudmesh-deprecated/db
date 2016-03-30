@@ -78,7 +78,7 @@ class CloudmeshDatabase(object):
             cls.session = Session()
 
     @classmethod
-    def find(cls, category=None, kind=None, table=None, **kwargs):
+    def find(cls, **kwargs):
         """
         find (category="openstack", kind="vm", name="vm_002")
         find (VM_OPENSTACK, kind="vm", name="vm_002") # do not use this one its only used internally
@@ -89,9 +89,15 @@ class CloudmeshDatabase(object):
         :param kwargs:
         :return:
         """
-        if table is not None:
-            t = table
-        elif category is not None and kind is not None:
+
+        scope = kwargs.pop('scope', 'first')
+        category = kwargs.pop('category', 'general')
+        kind = kwargs.pop('kind', None)
+        table = kwargs.pop('table', None)
+
+        t = table
+
+        if category is not None and kind is not None:
             t = cls.table(category=category, type=kind)
         else:
             data = {
@@ -102,7 +108,12 @@ class CloudmeshDatabase(object):
             }
             ValueError("find is improperly used category={category} kind={kind} table={table} args=args"
                        .format(**data))
-        return cls.session.query(t).filter_by(**kwargs).first()
+
+        result = cls.session.query(t).filter_by(**kwargs)
+        if scope=='first':
+            return result.first()
+        else:
+            return result
 
 
     @classmethod
@@ -126,11 +137,9 @@ class CloudmeshDatabase(object):
         for t in cls.tables:
             if (t.__type__ == kind):
                 part = cls.session.query(t).filter_by(**kwargs)
-                print("PPP", cls.to_list(part))
                 result.extend(cls.to_list(part))
 
         objects = result
-        print("OOO", objects)
         if scope == "first" and objects is not None:
             objects = dotdict(result[0])
 
