@@ -11,7 +11,7 @@ cm.info()
 def populate(cloud, _from,_to):
     global cm
     for i in range(_from, _to):
-        t = CloudmeshDatabase.table(cloud=cloud,type="vm")
+        t = CloudmeshDatabase.table(category=cloud, type="vm")
         vm = t("vm_" + str(i).zfill(3))
 
         cm.add(vm)
@@ -21,7 +21,7 @@ populate("libcloud", 10,20)
 
 
 for name in ["vm_002", "vm_009"]:
-    vm = cm.find("openstack", "vm", name=name)
+    vm = cm.find(category="openstack", kind="vm", name=name)
     if vm is not None:
         print(vm.name)
     else:

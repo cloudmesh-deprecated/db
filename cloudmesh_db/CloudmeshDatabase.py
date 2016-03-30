@@ -57,16 +57,16 @@ class CloudmeshDatabase(object):
             print (t.__category__, t.__tablename__)
 
     @classmethod
-    def table(cls, cloud=None, type=None):
+    def table(cls, category=None, type=None):
         """
         :return: the table class based on a given table name.
                  In case the table does not exist an exception is thrown
         """
         for t in cls.tables:
-            if (t.__type__ == type) and (t.__category__ == cloud):
+            if (t.__type__ == type) and (t.__category__ == category):
                 return t
 
-        ValueError("ERROR: unkown table {} {}".format(cloud, type))
+        ValueError("ERROR: unkown table {} {}".format(category, type))
     #
     # SESSION
     #
@@ -78,8 +78,30 @@ class CloudmeshDatabase(object):
             cls.session = Session()
 
     @classmethod
-    def find(cls, cloud, kind, **kwargs):
-        t = cls.table(cloud=cloud, type=kind)
+    def find(cls, category=None, kind=None, table=None, **kwargs):
+        """
+        find (category="openstack", kind="vm", name="vm_002")
+        find (VM_OPENSTACK, kind="vm", name="vm_002") # do not use this one its only used internally
+
+        :param category:
+        :param kind:
+        :param table:
+        :param kwargs:
+        :return:
+        """
+        if table is not None:
+            t = table
+        elif category is not None and kind is not None:
+            t = cls.table(category=category, type=kind)
+        else:
+            data = {
+                "category": category,
+                "kind": kind,
+                "table": table,
+                "args": kwargs
+            }
+            ValueError("find is improperly used category={category} kind={kind} table={table} args=args"
+                       .format(**data))
         return cls.session.query(t).filter_by(**kwargs).first()
 
 
