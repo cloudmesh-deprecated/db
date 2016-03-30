@@ -1,5 +1,6 @@
 from cloudmesh_db import VM_OPENSTACK, VM_LIBCLOUD
 from cloudmesh_db import CloudmeshDatabase
+from pprint import pprint
 
 echo = False
 
@@ -11,7 +12,7 @@ cm.info()
 def populate(cloud, _from,_to):
     global cm
     for i in range(_from, _to):
-        t = CloudmeshDatabase.table(category=cloud, type="vm")
+        t = CloudmeshDatabase.table(category=cloud, kind="vm")
         vm = t("vm_" + str(i).zfill(3))
 
         cm.add(vm)
@@ -35,10 +36,14 @@ cm1 = CloudmeshDatabase()
 vm = cm1.find(category="libcloud", kind="vm", name="vm_016")
 
 if vm is not None:
-    print(vm.name)
+    print(vm.name, type(vm))
 
 
 vm = cm.x_find(kind="vm", scope="first", name="vm_007" )
 
 if vm is not None:
-    print(vm.name)
+    print(vm)
+
+vm = cm.x_find(kind="vm", scope="all")
+
+print (vm)

@@ -54,19 +54,19 @@ class CloudmeshDatabase(object):
     def info(cls):
         print ("Info")
         for t in cls.tables:
-            print (t.__category__, t.__tablename__)
+            print (t.category, t.__tablename__)
 
     @classmethod
-    def table(cls, category=None, type=None):
+    def table(cls, category=None, kind=None):
         """
         :return: the table class based on a given table name.
                  In case the table does not exist an exception is thrown
         """
         for t in cls.tables:
-            if (t.__type__ == type) and (t.__category__ == category):
+            if (t.kind == kind) and (t.category == category):
                 return t
 
-        ValueError("ERROR: unkown table {} {}".format(category, type))
+        ValueError("ERROR: unkown table {} {}".format(category, kind))
     #
     # SESSION
     #
@@ -94,11 +94,12 @@ class CloudmeshDatabase(object):
         category = kwargs.pop('category', 'general')
         kind = kwargs.pop('kind', None)
         table = kwargs.pop('table', None)
+        output = kwargs.pop('output', 'dict')
 
         t = table
 
         if category is not None and kind is not None:
-            t = cls.table(category=category, type=kind)
+            t = cls.table(category=category, kind=kind)
         else:
             data = {
                 "category": category,
@@ -111,10 +112,13 @@ class CloudmeshDatabase(object):
 
         result = cls.session.query(t).filter_by(**kwargs)
         if scope=='first':
-            return result.first()
+            result =  result.first()
+            if output == 'dict':
+                result = cls.to_list([result])[0]
+        elif output == 'dict':
+            return cls.to_list(result)
         else:
             return result
-
 
     @classmethod
     def x_find(cls, **kwargs):
@@ -135,7 +139,7 @@ class CloudmeshDatabase(object):
         result = []
 
         for t in cls.tables:
-            if (t.__type__ == kind):
+            if (t.kind == kind):
                 part = cls.session.query(t).filter_by(**kwargs)
                 result.extend(cls.to_list(part))
 
@@ -161,7 +165,6 @@ class CloudmeshDatabase(object):
         result = list()
         for u in obj:
             _id = u.id
-            print("ID", u.id)
             values = {}
             for key in list(u.__dict__.keys()):
                 if not key.startswith("_sa"):
