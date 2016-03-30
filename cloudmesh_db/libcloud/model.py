@@ -1,9 +1,9 @@
 from ..CloudmeshDatabase import CloudmeshDatabase
 from sqlalchemy import Column, Date, Integer, String
 
-class VM_OPENSTACK(CloudmeshDatabase.Base):
-    __tablename__ = "vm_openstack"
-    __cloud__ = "openstack"
+class VM_LIBCLOUD(CloudmeshDatabase.Base):
+    __tablename__ = "vm_libcloud"
+    __cloud__ = "libcloud"
     __type__ = 'vm'
 
     id = Column(Integer, primary_key=True)
@@ -12,9 +12,9 @@ class VM_OPENSTACK(CloudmeshDatabase.Base):
     def __init__(self, name):
         self.name = name
 
-class IMAGE_OPENSTACK(CloudmeshDatabase.Base):
-    __tablename__ = "image_openstack"
-    __cloud__ = "openstack"
+class IMAGE_LIBCLOUD(CloudmeshDatabase.Base):
+    __tablename__ = "image_libcloud"
+    __cloud__ = "libcloud"
     __type__ = 'image'
 
     id = Column(Integer, primary_key=True)
@@ -22,3 +22,4 @@ class IMAGE_OPENSTACK(CloudmeshDatabase.Base):
 
     def __init__(self, name):
         self.name = name
+
