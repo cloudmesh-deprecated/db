@@ -252,7 +252,7 @@ class CloudmeshDatabase(object):
     def delete(cls,
                category=None,
                kind=None,
-               name=None):
+               **kwargs):
         """
         :param kind:
         :return:
@@ -270,12 +270,9 @@ class CloudmeshDatabase(object):
             }
             ValueError("find is improperly used category={category} kind={kind}"
                        .format(**data))
-        if name is None:
+        if len(kwargs) == 0:
             cls.session.query(t).delete()
         else:
-            print ("DDDDD")
-            pprint (cls.x_find(category=category, kind=kind, name=name))
-            result = cls.find(category=category, kind=kind, name=name, output='raw')
-            print (result)
+            cls.session.query(t).filter_by(**kwargs).delete()
             cls.info()
         cls.save()

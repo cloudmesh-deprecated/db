@@ -53,3 +53,6 @@ vm = cm.x_find(kind="vm", scope="all")
 pprint (vm)
 
 cm.delete(kind="vm", category="openstack", name="vm_003")
+cm.delete(kind="vm", category="openstack", label="vm_004")
+
+cm.info()
