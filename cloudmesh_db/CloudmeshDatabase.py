@@ -1,3 +1,4 @@
+from __future__ import print_function
 import os
 from datetime import datetime
 from sqlalchemy import Column, Integer, String
@@ -14,7 +15,6 @@ class CloudmeshMixin(object):
     category = Column(String, default="undefined")
     kind = Column(String, default="undefined")
     type = Column(String, default="undefined")
-    id = Column(Integer, primary_key=True)
 
     provider = Column(String, default="undefined")
 
@@ -31,10 +31,11 @@ class CloudmeshMixin(object):
     user = Column(String, default="undefined")
     project = Column(String, default="undefined")
 
-    def set_defaults(self, name=None, user=None):
-        self.user = user or  CloudmeshDatabase.user
-        self.name = name
-        self.label = name
+    def set_defaults(self, **kwargs):
+        print("D", kwargs)
+        self.user = kwargs.get('user') or  CloudmeshDatabase.user
+        self.name = kwargs.get('name')
+        self.label = kwargs.get('name')
 
     def __repr__(self):
         print ("{} {} {} {}".format(self.id, self.name, self.kind, self.category))
@@ -86,9 +87,15 @@ class CloudmeshDatabase(object):
 
     @classmethod
     def info(cls):
+        print ()
         print ("Info")
+        print ()
+        print("{:<20} {:<15} {:<15}".format("tablename", "category", "kind"))
+        print (70 * "=")
+
         for t in cls.tables:
-            print (t.category, t.__tablename__)
+            print ("{:<20} {:<15} {:<15}".format(t.__tablename__, t.category, t.kind))
+        print()
 
     @classmethod
     def table(cls, category=None, kind=None):
@@ -149,7 +156,10 @@ class CloudmeshDatabase(object):
             ValueError("find is improperly used category={category} kind={kind} table={table} args=args"
                        .format(**data))
 
-        result = cls.session.query(t).filter_by(**kwargs)
+        print ("TA", t, kwargs)
+
+        result = cls.session.query(t).filter_by(label= kwargs['name'])
+        print ("R", result.first())
         if scope=='first':
             result =  result.first()
             if output == 'dict':
@@ -192,6 +202,7 @@ class CloudmeshDatabase(object):
     def add(cls, o):
         cls.session.add(o)
         cls.session.commit()
+        cls.session.flush()
 
     @classmethod
     def to_list(cls, obj):

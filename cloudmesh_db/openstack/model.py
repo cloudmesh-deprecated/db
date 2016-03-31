@@ -43,10 +43,9 @@ class IMAGE_OPENSTACK(CloudmeshMixin, CloudmeshDatabase.Base):
     def __init__(self,
                  name=None,
                  uuid=None,
-                 category=None,
                  user=None,
                  **kwargs):
-        self.set_defaults(name=name, user=user)
+        CloudmeshMixin.set_defaults(name=name, user=user)
         self.username = kwargs.get("username", 'undefined')
         self.uuid = uuid
         self.type = self.__tablename__
@@ -112,13 +111,12 @@ class FLAVOR_OPENSTACK(CloudmeshMixin, CloudmeshDatabase.Base):
     kind = 'flavor'
 
     def __init__(self,
-                 name,
-                 uuid,
-                 category=None,
+                 name=None,
+                 uuid=None,
                  user=None,
                  **kwargs):
 
-        self.set_defaults(name=name, user=user)
+        CloudmeshMixin.set_defaults(kwargs)
         self.provider = "openstack"
 
         self.uuid = uuid
@@ -161,7 +159,6 @@ class VM_OPENSTACK(CloudmeshMixin, CloudmeshDatabase.Base):
     hostId = Column(String)
     image__id = Column(String)
     key = Column(String)
-    name = Column(String)
     volumes_attached = Column(String)
     progress = Column(String)
     security_groups = Column(String)
@@ -170,11 +167,11 @@ class VM_OPENSTACK(CloudmeshMixin, CloudmeshDatabase.Base):
     updated = Column(String)
     user_id = Column(String)  # what is this used for?
     username = Column(String)
+    name = Column(String)
 
+    def __init__(self, **kwargs):
 
-    def __init__(self, name=None, user=None, **kwargs):
-
-        self.set_defaults(name=name, user=user)
+        super(VM_OPENSTACK, self).set_defaults(**kwargs)
         self.uuid = kwargs.get("uuid", None)
         self.username = kwargs.get("username", 'undefined')
         self.diskConfig = kwargs.get("OS-DCF:diskConfig", None)

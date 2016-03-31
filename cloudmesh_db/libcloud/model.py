@@ -12,8 +12,11 @@ class VM_LIBCLOUD(CloudmeshMixin, CloudmeshDatabase.Base):
     name = Column(String)
 
     def __init__(self, name=None, user=None):
-        self.set_defaults(name=name, user=user)
+        # super(VM_LIBCLOUD, self).set_defaults(name=name, user=user)
 
+        self.user = user or CloudmeshDatabase.user
+        self.name = name
+        self.label = name
 
 # noinspection PyPep8Naming
 class IMAGE_LIBCLOUD(CloudmeshMixin, CloudmeshDatabase.Base):
@@ -25,4 +28,9 @@ class IMAGE_LIBCLOUD(CloudmeshMixin, CloudmeshDatabase.Base):
     name = Column(String)
 
     def __init__(self, name=None, user=None):
-        self.set_defaults(name=name, user=user)
+        # super(IMAGE_LIBCLOUD, self).set_defaults(name=name, user=user)
+
+
+        self.user = user or CloudmeshDatabase.user
+        self.name = name
+        self.label = name
