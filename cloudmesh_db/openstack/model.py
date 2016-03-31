@@ -45,7 +45,7 @@ class IMAGE_OPENSTACK(CloudmeshMixin, CloudmeshDatabase.Base):
                  uuid=None,
                  user=None,
                  **kwargs):
-        CloudmeshMixin.set_defaults(name=name, user=user)
+        super(IMAGE_OPENSTACK, self).set_defaults(name=name, user=user)
         self.username = kwargs.get("username", 'undefined')
         self.uuid = uuid
         self.type = self.__tablename__
@@ -115,8 +115,7 @@ class FLAVOR_OPENSTACK(CloudmeshMixin, CloudmeshDatabase.Base):
                  uuid=None,
                  user=None,
                  **kwargs):
-
-        CloudmeshMixin.set_defaults(kwargs)
+        super(FLAVOR_OPENSTACK, self).set_defaults(name=name, user=user)
         self.provider = "openstack"
 
         self.uuid = uuid
@@ -139,8 +138,9 @@ class VM_OPENSTACK(CloudmeshMixin, CloudmeshDatabase.Base):
     __tablename__ = "vm_openstack"
     category = "openstack"
     kind = 'vm'
-    provider = "openstack"    
+    provider = "openstack"
 
+    username = Column(String)
     uuid = Column(String)
     diskConfig = Column(String)
     availability_zone = Column(String)
@@ -166,12 +166,11 @@ class VM_OPENSTACK(CloudmeshMixin, CloudmeshDatabase.Base):
     tenant_id = Column(String)
     updated = Column(String)
     user_id = Column(String)  # what is this used for?
-    username = Column(String)
-    name = Column(String)
 
     def __init__(self, **kwargs):
 
         super(VM_OPENSTACK, self).set_defaults(**kwargs)
+
         self.uuid = kwargs.get("uuid", None)
         self.username = kwargs.get("username", 'undefined')
         self.diskConfig = kwargs.get("OS-DCF:diskConfig", None)
@@ -191,7 +190,7 @@ class VM_OPENSTACK(CloudmeshMixin, CloudmeshDatabase.Base):
         self.hostId = kwargs.get("hostId", None)
         self.image__id = kwargs.get("image__id", None)
         self.key = kwargs.get("key", None)
-        self.name = kwargs.get("name", None)
+
         # self.volumes_attached = kwargs.get("volumes_attached", None) or None
         # self.progress = kwargs.get("progress", None)
 

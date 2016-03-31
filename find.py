@@ -1,4 +1,5 @@
 from cloudmesh_db import CloudmeshDatabase
+from pprint import pprint
 
 echo = False
 
@@ -19,6 +20,16 @@ def populate(cloud, _from,_to):
 
 populate("openstack", 0,10)
 populate("libcloud", 10,20)
+
+
+result = cm.all(category='openstack', kind='vm')
+
+pprint (result)
+
+
+result = cm.all(category='libcloud', kind='vm')
+
+pprint (result)
 
 
 for name in ["vm_002", "vm_009"]:

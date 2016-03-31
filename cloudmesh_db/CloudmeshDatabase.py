@@ -10,7 +10,7 @@ from sqlalchemy.orm import sessionmaker
 
 
 class CloudmeshMixin(object):
-    __mapper_args__ = {'always_refresh': True}
+    #__mapper_args__ = {'always_refresh': True}
 
     category = Column(String, default="undefined")
     kind = Column(String, default="undefined")
@@ -32,10 +32,9 @@ class CloudmeshMixin(object):
     project = Column(String, default="undefined")
 
     def set_defaults(self, **kwargs):
-        print("D", kwargs)
         self.user = kwargs.get('user') or  CloudmeshDatabase.user
-        self.name = kwargs.get('name')
-        self.label = kwargs.get('name')
+        self.name = kwargs['name']
+        self.label = kwargs['name']
 
     def __repr__(self):
         print ("{} {} {} {}".format(self.id, self.name, self.kind, self.category))
@@ -121,6 +120,25 @@ class CloudmeshDatabase(object):
             print ("start session")
             Session = sessionmaker(bind=cls.engine)
             cls.session = Session()
+    @classmethod
+    def all(cls,
+            category='general',
+            kind=None,
+            table=None):
+
+        t = table
+
+        if category is not None and kind is not None:
+            t = cls.table(category=category, kind=kind)
+        else:
+            data = {
+                "category": category,
+                "kind": kind,
+            }
+            ValueError("find is improperly used category={category} kind={kind}"
+                       .format(**data))
+        result = cls.session.query(t).all()
+        return cls.to_list(result)
 
     @classmethod
     def find(cls,
