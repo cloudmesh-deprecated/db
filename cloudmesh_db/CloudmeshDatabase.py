@@ -277,6 +277,7 @@ class CloudmeshDatabase(object):
             cls.session.query(t).filter_by(**kwargs).delete()
         cls.save()
 
+    @classmethod
     def update(cls,
                category=None,
                kind=None,
@@ -300,8 +301,21 @@ class CloudmeshDatabase(object):
         filter = kwargs['filter']
         values = kwargs['update']
 
-        print (filter)
-        print (values)
-
-        cls.session.update(t).filter_by(**filter).update(values)
+        cls.session.query(t).filter_by(**filter).update(values)
         cls.save()
+
+    @classmethod
+    def set(cls,
+            name,
+            attribute,
+            value,
+            category=None,
+            kind=None,
+            ):
+
+        cls.update(kind=None,
+                  category=kind,
+                  filter={'name': name},
+                  update={'label': 'x',
+                          attribute: value}
+                  )
