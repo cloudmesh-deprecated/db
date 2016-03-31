@@ -50,8 +50,8 @@ class IMAGE_LIBCLOUD(CloudmeshMixin, CloudmeshDatabase.Base):
 
 class FLAVOR_LIBCLOUD(CloudmeshMixin, CloudmeshDatabase.Base):
     __tablename__ = "flavor_libcloud"
-    __category__ = "general"
-    __type__ = 'flavor'
+    category = "libcloud"
+    kind = 'flavor'
 
     uuid = Column(String)
     flavor_id = Column(String)
@@ -60,7 +60,6 @@ class FLAVOR_LIBCLOUD(CloudmeshMixin, CloudmeshDatabase.Base):
     bandwidth = Column(String)
     price = Column(String)
     cpu = Column(String)
-    kind = 'flavor'
 
     def __init__(self,
                  name=None,
