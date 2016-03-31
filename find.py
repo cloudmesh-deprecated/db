@@ -56,3 +56,12 @@ cm.delete(kind="vm", category="openstack", name="vm_003")
 cm.delete(kind="vm", category="openstack", label="vm_004")
 
 cm.info()
+
+cm.update(kind="vm",
+          category="openstack",
+          filter={'name': "vm_002"},
+          update={'uuid': 'x'}
+)
+
+vm = cm.x_find(kind="vm", scope="first", name="vm_002" )
+pprint(vm)

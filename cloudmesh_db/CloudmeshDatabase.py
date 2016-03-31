@@ -274,5 +274,29 @@ class CloudmeshDatabase(object):
             cls.session.query(t).delete()
         else:
             cls.session.query(t).filter_by(**kwargs).delete()
-            cls.info()
+        cls.save()
+
+    def update(cls,
+               category=None,
+               kind=None,
+               **kwargs):
+        """
+
+        :param kind:
+        :param kwargs:
+        :return:
+        """
+        # bug: user = self.user or Username()
+        if category is not None and kind is not None:
+            t = cls.table(category=category, kind=kind)
+        else:
+            data = {
+                "category": category,
+                "kind": kind,
+            }
+            ValueError("find is improperly used category={category} kind={kind}"
+                       .format(**data))
+        filter = kwargs['filter']
+        values = kwargs['update']
+        cls.session.query(t).filter_by(**filter).update(**values)
         cls.save()
