@@ -14,6 +14,7 @@ class CloudmeshMixin(object):
     category = Column(String, default="undefined")
     kind = Column(String, default="undefined")
     type = Column(String, default="undefined")
+    id = Column(Integer, primary_key=True)
 
     provider = Column(String, default="undefined")
 
@@ -202,12 +203,12 @@ class CloudmeshDatabase(object):
         """
         result = list()
         for u in obj:
-            _id = u.id
-            values = {}
-            for key in list(u.__dict__.keys()):
-                if not key.startswith("_sa"):
-                    values[key] = u.__dict__[key]
-            result.append(values)
-        # pprint(result)
+            if u is not None:
+                values = {}
+                for key in list(u.__dict__.keys()):
+                    if not key.startswith("_sa"):
+                        values[key] = u.__dict__[key]
+                result.append(values)
+            # pprint(result)
         return result
 
