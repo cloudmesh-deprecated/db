@@ -4,8 +4,6 @@ from sqlalchemy import Column, Date, Integer, String
 
 class IMAGE_LIBCLOUD(CloudmeshMixin, CloudmeshDatabase.Base):
     __tablename__ = "image_libcloud"
-    category = "libcloud"
-    kind = 'image'
 
     uuid = Column(String)
     status = Column(String)
@@ -32,7 +30,10 @@ class IMAGE_LIBCLOUD(CloudmeshMixin, CloudmeshDatabase.Base):
                  **kwargs):
         super(IMAGE_LIBCLOUD, self).set_defaults(name=name, user=user)
 
+        self.category = "libcloud"
+        self.kind = 'image'
         self.provider = "libcloud"
+
         self.status = kwargs.get('status')
         self.architecture = kwargs.get('architecture')
         self.description = kwargs.get('description')
@@ -50,8 +51,6 @@ class IMAGE_LIBCLOUD(CloudmeshMixin, CloudmeshDatabase.Base):
 
 class FLAVOR_LIBCLOUD(CloudmeshMixin, CloudmeshDatabase.Base):
     __tablename__ = "flavor_libcloud"
-    category = "libcloud"
-    kind = 'flavor'
 
     uuid = Column(String)
     flavor_id = Column(String)
@@ -66,7 +65,10 @@ class FLAVOR_LIBCLOUD(CloudmeshMixin, CloudmeshDatabase.Base):
                  user=None,
                  **kwargs):
         super(FLAVOR_LIBCLOUD, self).set_defaults(name=name, user=user)
+        self.category = "libcloud"
+        self.kind = 'flavor'
         self.provider = "libcloud"
+
         self.uuid = kwargs.get("uuid")
         self.flavor_id = kwargs.get("flavor_id")
         self.ram = kwargs.get("ram")
@@ -79,8 +81,7 @@ class FLAVOR_LIBCLOUD(CloudmeshMixin, CloudmeshDatabase.Base):
 
 class VM_LIBCLOUD(CloudmeshMixin, CloudmeshDatabase.Base):
     __tablename__ = "vm_libcloud"
-    category = "libcloud"
-    kind = 'vm'
+
 
     uuid = Column(String)
     state = Column(String)
@@ -101,7 +102,10 @@ class VM_LIBCLOUD(CloudmeshMixin, CloudmeshDatabase.Base):
 
         super(VM_LIBCLOUD, self).set_defaults(name=name, user=user)
 
+        self.category = "libcloud"
+        self.kind = 'vm'
         self.provider = "libcloud"
+
         self.uuid = kwargs.get("node_id")
         self.state = kwargs.get("state")
         self.public_ips = kwargs.get("public_ips")

@@ -90,13 +90,22 @@ vm = cm.x_find(kind="vm", scope="first", name="vm_009")
 pprint(vm)
 
 
+
+
 cm.set("vm_009", 'user', 'gregor', category='openstack', kind='vm')
 
 vm = cm.x_find(kind="vm", scope="first", name="vm_009")
 pprint(vm)
 
+vm = cm.filter_by(name="vm_011")
+pprint(vm)
 
-#cm.set("vm_002", 'user', 'gregor')
+vm = cm.filter_by(label="x", scope='all', id=3)
+pprint(vm)
 
-#vm = cm.x_find(kind="vm", scope="first", name="vm_002")
-#pprint(vm)
+
+cm.set("vm_002", 'user', 'world')
+
+vm = cm.x_find(kind="vm", scope="first", name="vm_002")
+pprint(vm)
+

@@ -11,7 +11,7 @@ from pprint import pprint
 from sqlalchemy import update
 
 class CloudmeshMixin(object):
-    #__mapper_args__ = {'always_refresh': True}
+    __mapper_args__ = {'always_refresh': True}
 
     category = Column(String, default="undefined")
     kind = Column(String, default="undefined")
@@ -218,6 +218,33 @@ class CloudmeshDatabase(object):
         return objects
 
     @classmethod
+    def filter_by(cls, **kwargs):
+        """
+        This method returns either
+        a) an array of objects from the database in dict format, that match a particular kind.
+           If the kind is not specified vm is used. one of the arguments must be scope="all"
+        b) a single entry that matches the first occurance of the query specified by kwargs,
+           such as name="vm_001"
+
+        :param kwargs: the arguments to be matched, scope defines if all or just the first value
+               is returned. first is default.
+        :return: a list of objects, if scope is first a single object in dotdict format is returned
+        """
+        scope = kwargs.pop("scope", "first")
+
+        result = []
+
+        for t in cls.tables:
+            part = cls.session.query(t).filter_by(**kwargs)
+            result.extend(cls.to_list(part))
+
+        objects = result
+        if scope == "first" and objects is not None:
+            objects = dotdict(result[0])
+
+        return objects
+
+    @classmethod
     def add(cls, o):
         cls.session.add(o)
         cls.save()
@@ -313,9 +340,16 @@ class CloudmeshDatabase(object):
             kind=None,
             ):
 
-        cls.update(kind=None,
-                  category=kind,
+        if category is None or kind is None:
+            o = cls.filter_by(name=name)
+            print (o)
+            print (o.name)
+            print (o.kind)
+        '''
+        cls.update(kind=kind,
+                  category=category,
                   filter={'name': name},
                   update={'label': 'x',
                           attribute: value}
                   )
+        '''

@@ -5,9 +5,6 @@ from sqlalchemy import Column, Date, Integer, String
 # noinspection PyPep8Naming
 class IMAGE_OPENSTACK(CloudmeshMixin, CloudmeshDatabase.Base):
     __tablename__ = "image_openstack"
-    category = "openstack"
-    kind = 'image'
-    provider = "openstack"
 
     uuid = Column(String)
     status = Column(String)
@@ -46,6 +43,11 @@ class IMAGE_OPENSTACK(CloudmeshMixin, CloudmeshDatabase.Base):
                  user=None,
                  **kwargs):
         super(IMAGE_OPENSTACK, self).set_defaults(name=name, user=user)
+
+        self.category = "openstack"
+        self.kind = 'image'
+        self.provider = "openstack"
+
         self.username = kwargs.get("username", 'undefined')
         self.uuid = uuid
         self.type = self.__tablename__
@@ -95,9 +97,6 @@ class IMAGE_OPENSTACK(CloudmeshMixin, CloudmeshDatabase.Base):
 
 class FLAVOR_OPENSTACK(CloudmeshMixin, CloudmeshDatabase.Base):
     __tablename__ = "flavor_openstack"
-    category = "openstack"
-    kind = 'flavor'
-    provider = "openstack"
 
     uuid = Column(String)
     ram = Column(String)
@@ -116,6 +115,8 @@ class FLAVOR_OPENSTACK(CloudmeshMixin, CloudmeshDatabase.Base):
                  user=None,
                  **kwargs):
         super(FLAVOR_OPENSTACK, self).set_defaults(name=name, user=user)
+        self.category = "openstack"
+        self.kind = 'flavor'
         self.provider = "openstack"
 
         self.uuid = uuid
@@ -136,9 +137,6 @@ class FLAVOR_OPENSTACK(CloudmeshMixin, CloudmeshDatabase.Base):
 
 class VM_OPENSTACK(CloudmeshMixin, CloudmeshDatabase.Base):
     __tablename__ = "vm_openstack"
-    category = "openstack"
-    kind = 'vm'
-    provider = "openstack"
 
     username = Column(String)
     uuid = Column(String)
@@ -170,6 +168,10 @@ class VM_OPENSTACK(CloudmeshMixin, CloudmeshDatabase.Base):
     def __init__(self, **kwargs):
 
         super(VM_OPENSTACK, self).set_defaults(**kwargs)
+
+        self.category = "openstack"
+        self.kind = 'vm'
+        self.provider = "openstack"
 
         self.uuid = kwargs.get("uuid", None)
         self.username = kwargs.get("username", 'undefined')

@@ -52,8 +52,7 @@ class VAR(CloudmeshMixin, CloudmeshDatabase.Base):
     # name defined in mixin
 
     __tablename__ = "var"
-    category = "general"
-    kind = 'var'
+
 
     value = Column(String)
     type = Column(String, default="string")
@@ -65,6 +64,9 @@ class VAR(CloudmeshMixin, CloudmeshDatabase.Base):
                  type=str,
                  user=None):
         CloudmeshMixin.set_defaults(name=name, user=user)
+        self.category = "general"
+        self.kind = 'var'
+
         self.type = type or str
         self.value = self.type(value)
 
@@ -94,9 +96,7 @@ class LAUNCHER(CloudmeshMixin, CloudmeshDatabase.Base):
 class KEY(CloudmeshMixin, CloudmeshDatabase.Base):
     
     __tablename__ = "key"
-    category = "general"
-    kind = 'key'
-    
+
     value = Column(String)
     fingerprint = Column(String, unique=True)
     source = Column(String)
@@ -115,6 +115,9 @@ class KEY(CloudmeshMixin, CloudmeshDatabase.Base):
                  user=None,
                  is_default="False"):
         CloudmeshMixin.set_defaults(name=name, user=user)
+        self.category = "general"
+        self.kind = 'key'
+
         self.value = value
         self.uri = uri
         self.comment = comment
@@ -126,8 +129,7 @@ class KEY(CloudmeshMixin, CloudmeshDatabase.Base):
 class GROUP(CloudmeshMixin, CloudmeshDatabase.Base):
     
     __tablename__ = "group"
-    category = "general"
-    kind = 'group'
+
     
     member = Column(String)
     species = Column(String)
@@ -139,6 +141,11 @@ class GROUP(CloudmeshMixin, CloudmeshDatabase.Base):
                  category=None,
                  user=None):
         CloudmeshMixin.set_defaults(name=name, user=user)
+
+        self.category = "general"
+
+        self.kind = 'group'
+
         self.species = species or "vm"
         self.member = member
 
@@ -147,8 +154,6 @@ class GROUP(CloudmeshMixin, CloudmeshDatabase.Base):
 class RESERVATION(CloudmeshMixin, CloudmeshDatabase.Base):
     
     __tablename__ = "reservation"
-    category = "general"
-    kind = 'reservation'
 
     hosts = Column(String)  # should be list of strings
     description = Column(String)
@@ -160,6 +165,9 @@ class RESERVATION(CloudmeshMixin, CloudmeshDatabase.Base):
                  project=None):
 
         CloudmeshMixin.set_defaults(name=name, user=user)
+        self.category = "general"
+        self.kind = 'reservation'
+
         self.hosts = hosts
         self.start_time = start
         self.end_time = end
@@ -170,8 +178,6 @@ class RESERVATION(CloudmeshMixin, CloudmeshDatabase.Base):
 class SECGROUP(CloudmeshMixin, CloudmeshDatabase.Base):
     
     __tablename__ = "secgroup"
-    category = "general"
-    kind = 'secgroup'
 
     uuid = Column(String)
 
@@ -181,14 +187,16 @@ class SECGROUP(CloudmeshMixin, CloudmeshDatabase.Base):
                  user=None,
                  project=None):
         CloudmeshMixin.set_defaults(name=name, user=user)
+        self.category = "general"
+        self.kind = 'secgroup'
+
         self.uuid = uuid
         self.project = project
 
 
 class SECGROUPRULE(CloudmeshMixin, CloudmeshDatabase.Base):
     __tablename__ = "secgrouprule"
-    category = "general"
-    kind = 'secgrouprule'
+
 
     groupid = Column(String)
     fromPort = Column(String)
@@ -210,6 +218,8 @@ class SECGROUPRULE(CloudmeshMixin, CloudmeshDatabase.Base):
                  cidr=None):
 
         CloudmeshMixin.set_defaults(name=name, user=user)
+        self.category = "general"
+        self.kind = 'secgrouprule'
         self.uuid = uuid
         self.groupid = groupid
         self.project = project
@@ -222,8 +232,7 @@ class SECGROUPRULE(CloudmeshMixin, CloudmeshDatabase.Base):
 class BATCHJOB(CloudmeshMixin, CloudmeshDatabase.Base):
 
     __tablename__ = "batchjob"
-    category = "general"
-    kind = 'batchjob'
+
 
     type = Column(String, default="string")
     dir = Column(String, default="string")
@@ -246,6 +255,8 @@ class BATCHJOB(CloudmeshMixin, CloudmeshDatabase.Base):
                  **kwargs
                  ):
         CloudmeshMixin.set_defaults(name=name, user=user)
+        self.category = "general"
+        self.kind = 'batchjob'
         self.provider = "slurm"
         self.dir = kwargs.get('dir')
         self.nodes = kwargs.get('nodes')
