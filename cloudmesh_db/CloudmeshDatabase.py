@@ -89,12 +89,14 @@ class CloudmeshDatabase(object):
         print ()
         print ("Info")
         print ()
-        print("{:<20} {:<15} {:<15}".format("tablename", "category", "kind"))
+        print("{:<20} {:<15} {:<15} {:<4}".format("tablename", "category", "kind", "count"))
         print (70 * "=")
 
         for t in cls.tables:
-            print ("{:<20} {:<15} {:<15}".format(t.__tablename__, t.category, t.kind))
+            count = cls.session.query(t).count()
+            print ("{:<20} {:<15} {:<15} {:<4}".format(t.__tablename__, t.category, t.kind, count))
         print()
+
 
     @classmethod
     def table(cls, category=None, kind=None):
@@ -174,10 +176,8 @@ class CloudmeshDatabase(object):
             ValueError("find is improperly used category={category} kind={kind} table={table} args=args"
                        .format(**data))
 
-        print ("TA", t, kwargs)
+        result = cls.session.query(t).filter_by(**kwargs)
 
-        result = cls.session.query(t).filter_by(label= kwargs['name'])
-        print ("R", result.first())
         if scope=='first':
             result =  result.first()
             if output == 'dict':
