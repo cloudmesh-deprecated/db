@@ -348,11 +348,10 @@ class CloudmeshDatabase(object):
             print (o)
             print (o.name)
             print (o.kind)
-        '''
-        cls.update(kind=kind,
-                  category=category,
-                  filter={'name': name},
-                  update={'label': 'x',
-                          attribute: value}
-                  )
-        '''
+
+            cls.update(kind=o.kind,
+                      category=o.category,
+                      filter={'name': name},
+                      update={'label': 'x',
+                              attribute: value}
+                      )
