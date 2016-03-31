@@ -7,7 +7,7 @@ from sqlalchemy import create_engine
 from cloudmesh_client.common.dotdict import dotdict
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-
+from pprint import pprint
 
 class CloudmeshMixin(object):
     #__mapper_args__ = {'always_refresh': True}
@@ -173,7 +173,7 @@ class CloudmeshDatabase(object):
                 "table": table,
                 "args": kwargs
             }
-            ValueError("find is improperly used category={category} kind={kind} table={table} args=args"
+            ValueError("find is improperly used category={category} kind={kind} table={table} args={args}"
                        .format(**data))
 
         result = cls.session.query(t).filter_by(**kwargs)
@@ -219,6 +219,10 @@ class CloudmeshDatabase(object):
     @classmethod
     def add(cls, o):
         cls.session.add(o)
+        cls.save()
+
+    @classmethod
+    def save(cls):
         cls.session.commit()
         cls.session.flush()
 
@@ -241,3 +245,37 @@ class CloudmeshDatabase(object):
             # pprint(result)
         return result
 
+    #
+    # DELETE
+    #
+
+    def delete(cls,
+               category=None,
+               kind=None,
+               name=None):
+        """
+        :param kind:
+        :return:
+        """
+        #
+        # BUG does not look for user related data
+        # user = self.user or Username()
+        #
+        if category is not None and kind is not None:
+            t = cls.table(category=category, kind=kind)
+        else:
+            data = {
+                "category": category,
+                "kind": kind,
+            }
+            ValueError("find is improperly used category={category} kind={kind}"
+                       .format(**data))
+        if name is None:
+            cls.session.query(t).delete()
+        else:
+            print ("DDDDD")
+            pprint (cls.x_find(category=category, kind=kind, name=name))
+            result = cls.find(category=category, kind=kind, name=name, output='raw')
+            print (result)
+            cls.info()
+        cls.save()
