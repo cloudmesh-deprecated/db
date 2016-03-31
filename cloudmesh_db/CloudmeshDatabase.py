@@ -47,6 +47,38 @@ class CloudmeshMixin(object):
 
 class CloudmeshDatabase(object):
 
+
+    '''
+
+    def __init__(self, user=None):
+        self.__dict__ = self.__shared_state
+
+        if self.initialized is None:
+            self.user = ConfigDict("cloudmesh.yaml")["cloudmesh.profile.username"]
+            self.filename = Config.path_expand(os.path.join("~", ".cloudmesh", "cloudmesh.db"))
+            self.engine = create_engine('sqlite:///{}'.format(self.filename), echo=False)
+            self.data = {"filename": self.filename}
+
+            if user is None:
+                self.user = ConfigDict("cloudmesh.yaml")["cloudmesh.profile.username"]
+            else:
+                self.user = user
+            CloudmeshDatabase.create()
+            CloudmeshDatabase.create_tables()
+            CloudmeshDatabase.start()
+
+    #
+    # MODEL
+    #
+    @classmethod
+    def create(cls):
+        # cls.clean()
+        filename = Config.path_expand(os.path.join("~", ".cloudmesh", "cloudmesh.db"))
+        if not os.path.isfile(filename):
+            cls.create_model()
+
+
+    '''
     __shared_state = {}
     data = {"filename": "data.db"}
     initialized = None
