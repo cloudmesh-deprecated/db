@@ -12,6 +12,7 @@ def populate(cloud, _from,_to):
     for i in range(_from, _to):
         t = CloudmeshDatabase.table(category=cloud, kind="vm")
         name = "vm_" + str(i).zfill(3)
+        print ("N", name, t)
         vm = t(name=name)
 
         cm.add(vm)

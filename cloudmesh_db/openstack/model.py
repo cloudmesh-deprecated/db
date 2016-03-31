@@ -5,6 +5,9 @@ from sqlalchemy import Column, Date, Integer, String
 # noinspection PyPep8Naming
 class IMAGE_OPENSTACK(CloudmeshMixin, CloudmeshDatabase.Base):
     __tablename__ = "image_openstack"
+    __category__ = "openstack"
+    __kind__ = 'image'
+    __provider__ = "openstack"
 
     uuid = Column(String)
     status = Column(String)
@@ -43,10 +46,6 @@ class IMAGE_OPENSTACK(CloudmeshMixin, CloudmeshDatabase.Base):
                  user=None,
                  **kwargs):
         super(IMAGE_OPENSTACK, self).set_defaults(name=name, user=user)
-
-        self.category = "openstack"
-        self.kind = 'image'
-        self.provider = "openstack"
 
         self.username = kwargs.get("username", 'undefined')
         self.uuid = uuid
@@ -98,6 +97,10 @@ class IMAGE_OPENSTACK(CloudmeshMixin, CloudmeshDatabase.Base):
 class FLAVOR_OPENSTACK(CloudmeshMixin, CloudmeshDatabase.Base):
     __tablename__ = "flavor_openstack"
 
+    __category__ = "openstack"
+    __kind__ = 'flavor'
+    __provider__ = "openstack"
+
     uuid = Column(String)
     ram = Column(String)
     os_flv_disabled = Column(String)
@@ -107,7 +110,6 @@ class FLAVOR_OPENSTACK(CloudmeshMixin, CloudmeshDatabase.Base):
     rxtx_factor = Column(String)
     os_flv_ext_data = Column(String)
     disk = Column(String)
-    kind = 'flavor'
 
     def __init__(self,
                  name=None,
@@ -115,9 +117,7 @@ class FLAVOR_OPENSTACK(CloudmeshMixin, CloudmeshDatabase.Base):
                  user=None,
                  **kwargs):
         super(FLAVOR_OPENSTACK, self).set_defaults(name=name, user=user)
-        self.category = "openstack"
-        self.kind = 'flavor'
-        self.provider = "openstack"
+
 
         self.uuid = uuid
         self.ram = kwargs.get('ram')
@@ -137,6 +137,10 @@ class FLAVOR_OPENSTACK(CloudmeshMixin, CloudmeshDatabase.Base):
 
 class VM_OPENSTACK(CloudmeshMixin, CloudmeshDatabase.Base):
     __tablename__ = "vm_openstack"
+
+    __category__ = "openstack"
+    __kind__ = 'vm'
+    __provider__ = "openstack"
 
     username = Column(String)
     uuid = Column(String)
@@ -168,10 +172,6 @@ class VM_OPENSTACK(CloudmeshMixin, CloudmeshDatabase.Base):
     def __init__(self, **kwargs):
 
         super(VM_OPENSTACK, self).set_defaults(**kwargs)
-
-        self.category = "openstack"
-        self.kind = 'vm'
-        self.provider = "openstack"
 
         self.uuid = kwargs.get("uuid", None)
         self.username = kwargs.get("username", 'undefined')

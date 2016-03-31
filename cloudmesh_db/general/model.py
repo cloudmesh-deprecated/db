@@ -5,8 +5,9 @@ from sqlalchemy import Column, Date, Integer, String
 
 class COUNTER(CloudmeshMixin, CloudmeshDatabase.Base):
     __tablename__ = "counter"
-    category = "general"
-    kind = 'counter'
+    __category__ = "general"
+    __kind__ = 'counter'
+    __provider__ = 'general'
 
     value = Column(Integer)
     kind = "counter"
@@ -28,8 +29,9 @@ class DEFAULT(CloudmeshMixin, CloudmeshDatabase.Base):
     todo: check if its global or general
     """
     __tablename__ = "default"
-    category = "general"
-    kind = 'default'
+    __category__ = "general"
+    __kind__ = 'default'
+    __provider__ = 'general'
 
     value = Column(String)
     type = Column(String, default="string")
@@ -52,7 +54,9 @@ class VAR(CloudmeshMixin, CloudmeshDatabase.Base):
     # name defined in mixin
 
     __tablename__ = "var"
-
+    __category__ = "general"
+    __kind__ = 'var'
+    __provider__ = 'general'
 
     value = Column(String)
     type = Column(String, default="string")
@@ -79,8 +83,10 @@ class LAUNCHER(CloudmeshMixin, CloudmeshDatabase.Base):
     """
     
     __tablename__ = "launcher"
-    category = "general"
-    kind = 'launcher'
+    __category__ = "general"
+    __kind__ = 'launcher'
+    __provider__ = 'general'
+
 
     parameters = Column(String)  # This is the parameter represented as yaml object
 
@@ -96,6 +102,9 @@ class LAUNCHER(CloudmeshMixin, CloudmeshDatabase.Base):
 class KEY(CloudmeshMixin, CloudmeshDatabase.Base):
     
     __tablename__ = "key"
+    __category__ = "general"
+    __kind__ = 'key'
+    __provider__ = 'general'
 
     value = Column(String)
     fingerprint = Column(String, unique=True)
@@ -129,7 +138,9 @@ class KEY(CloudmeshMixin, CloudmeshDatabase.Base):
 class GROUP(CloudmeshMixin, CloudmeshDatabase.Base):
     
     __tablename__ = "group"
-
+    __category__ = "general"
+    __kind__ = 'counter'
+    __provider__ = 'general'
     
     member = Column(String)
     species = Column(String)
@@ -155,6 +166,12 @@ class RESERVATION(CloudmeshMixin, CloudmeshDatabase.Base):
     
     __tablename__ = "reservation"
 
+
+    __category__ = "general"
+    __kind__ = 'counter'
+    __provider__ = 'general'
+
+
     hosts = Column(String)  # should be list of strings
     description = Column(String)
     start_time = Column(String)  # date, time
@@ -178,6 +195,9 @@ class RESERVATION(CloudmeshMixin, CloudmeshDatabase.Base):
 class SECGROUP(CloudmeshMixin, CloudmeshDatabase.Base):
     
     __tablename__ = "secgroup"
+    __category__ = "general"
+    __kind__ = 'secgroup'
+    __provider__ = 'general'
 
     uuid = Column(String)
 
@@ -187,8 +207,7 @@ class SECGROUP(CloudmeshMixin, CloudmeshDatabase.Base):
                  user=None,
                  project=None):
         CloudmeshMixin.set_defaults(name=name, user=user)
-        self.category = "general"
-        self.kind = 'secgroup'
+
 
         self.uuid = uuid
         self.project = project
@@ -197,6 +216,10 @@ class SECGROUP(CloudmeshMixin, CloudmeshDatabase.Base):
 class SECGROUPRULE(CloudmeshMixin, CloudmeshDatabase.Base):
     __tablename__ = "secgrouprule"
 
+
+    __category__ = "general"
+    __kind__ = 'secgrouprule'
+    __provider__ = 'general'
 
     groupid = Column(String)
     fromPort = Column(String)
@@ -233,6 +256,10 @@ class BATCHJOB(CloudmeshMixin, CloudmeshDatabase.Base):
 
     __tablename__ = "batchjob"
 
+
+    __category__ = "general"
+    __kind__ = 'batchjob'
+    __provider__ = 'general'
 
     type = Column(String, default="string")
     dir = Column(String, default="string")

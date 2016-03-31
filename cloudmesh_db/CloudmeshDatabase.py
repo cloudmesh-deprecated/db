@@ -36,6 +36,10 @@ class CloudmeshMixin(object):
         self.user = kwargs.get('user') or  CloudmeshDatabase.user
         self.name = kwargs['name']
         self.label = kwargs['name']
+        self.category = self.__category__
+        self.kind = self.__kind__
+        self.provider = self.__provider__
+
 
     def __repr__(self):
         print ("{} {} {} {}".format(self.id, self.name, self.kind, self.category))
@@ -95,7 +99,7 @@ class CloudmeshDatabase(object):
 
         for t in cls.tables:
             count = cls.session.query(t).count()
-            print ("{:<20} {:<15} {:<15} {:<4}".format(t.__tablename__, t.category, t.kind, count))
+            print ("{:<20} {:<15} {:<15} {:<4}".format(t.__tablename__, t.__category__, t.__kind__, count))
         print()
 
 
@@ -109,9 +113,8 @@ class CloudmeshDatabase(object):
                  In case the table does not exist an exception is thrown
         """
         for t in cls.tables:
-            if (t.kind == kind) and (t.category == category):
+            if (t.__kind__ == kind) and (t.__category__ == category):
                 return t
-
         ValueError("ERROR: unkown table {} {}".format(category, kind))
     #
     # SESSION
@@ -207,7 +210,7 @@ class CloudmeshDatabase(object):
         result = []
 
         for t in cls.tables:
-            if (t.kind == kind):
+            if (t.__kind__ == kind):
                 part = cls.session.query(t).filter_by(**kwargs)
                 result.extend(cls.to_list(part))
 
