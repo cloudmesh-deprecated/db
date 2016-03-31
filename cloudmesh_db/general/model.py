@@ -1,9 +1,9 @@
 from __future__ import print_function
-from ..CloudmeshDatabase import CloudmeshDatabase
+from ..CloudmeshDatabase import CloudmeshDatabase, CloudmeshMixin
 from sqlalchemy import Column, Date, Integer, String
 
 
-class COUNTER(CloudmeshDatabase.CloudmeshMixin, CloudmeshDatabase.Base):
+class COUNTER(CloudmeshMixin, CloudmeshDatabase.Base):
     __tablename__ = "counter"
     category = "general"
     kind = 'counter'
@@ -16,14 +16,11 @@ class COUNTER(CloudmeshDatabase.CloudmeshMixin, CloudmeshDatabase.Base):
                  name=None,
                  value=None,
                  user=None):
-
-        self.label = name
-        self.name = name
-        self.user = user or  CloudmeshDatabase.user
+        self.set_defaults(name=name, user=user)
         self.value = int(value)
 
 
-class DEFAULT(CloudmeshDatabase.CloudmeshMixin, CloudmeshDatabase.Base):
+class DEFAULT(CloudmeshMixin, CloudmeshDatabase.Base):
     """table to store default values
 
     if the category is "global" it is meant to be a global variable
@@ -44,16 +41,13 @@ class DEFAULT(CloudmeshDatabase.CloudmeshMixin, CloudmeshDatabase.Base):
                  type=str,
                  user=None):
 
-        self.label = name
-        self.category = category or "general"
-        self.name = name
-        self.user = user or  CloudmeshDatabase.user
+        self.set_defaults(name=name, user=user)
         self.type = type or str
         self.value = self.type(value)
 
 
 
-class VAR(CloudmeshDatabase.CloudmeshMixin, CloudmeshDatabase.Base):
+class VAR(CloudmeshMixin, CloudmeshDatabase.Base):
     """table to store peristant variable values
     """
     # name defined in mixin

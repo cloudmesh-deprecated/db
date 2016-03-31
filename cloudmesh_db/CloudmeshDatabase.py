@@ -30,6 +30,10 @@ class CloudmeshMixin(object):
     user = Column(String, default="undefined")
     project = Column(String, default="undefined")
 
+    def set_defaults(self, name=None, user=None):
+        self.user = user or  CloudmeshDatabase.user
+        self.name = name
+        self.label = name
 
     def __repr__(self):
         print ("{} {} {} {}".format(self.id, self.name, self.kind, self.category))
@@ -44,6 +48,7 @@ class CloudmeshDatabase(object):
     Base = declarative_base()
     session = None
     tables = None
+    user = "gvonlasz"
 
     def __init__(self):
         self.__dict__ = self.__shared_state
