@@ -8,6 +8,7 @@ from cloudmesh_client.common.dotdict import dotdict
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from pprint import pprint
+from sqlalchemy import update
 
 class CloudmeshMixin(object):
     #__mapper_args__ = {'always_refresh': True}
@@ -298,5 +299,9 @@ class CloudmeshDatabase(object):
                        .format(**data))
         filter = kwargs['filter']
         values = kwargs['update']
-        cls.session.query(t).filter_by(**filter).update(**values)
+
+        print (filter)
+        print (values)
+
+        cls.session.update(t).filter_by(**filter).update(values)
         cls.save()

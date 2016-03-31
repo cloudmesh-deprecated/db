@@ -60,7 +60,7 @@ cm.info()
 cm.update(kind="vm",
           category="openstack",
           filter={'name': "vm_002"},
-          update={'uuid': 'x'}
+          update={'label': 'x'}
 )
 
 vm = cm.x_find(kind="vm", scope="first", name="vm_002" )
