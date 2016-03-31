@@ -1,11 +1,39 @@
-from sqlalchemy import create_engine, ForeignKey
-from sqlalchemy import Column, Date, Integer, String
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship, backref
 import os
+from datetime import datetime
+from sqlalchemy import Column, Integer, String
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+
 from cloudmesh_client.common.dotdict import dotdict
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
+
+
+class CloudmeshMixin(object):
+    __mapper_args__ = {'always_refresh': True}
+
+    category = Column(String, default="undefined")
+    kind = Column(String, default="undefined")
+    type = Column(String, default="undefined")
+
+    provider = Column(String, default="undefined")
+
+    id = Column(Integer, primary_key=True)
+    # created_at = Column(DateTime, default=datetime.now)
+    # updated_at = Column(DateTime, default=datetime.now, onupdate=datetime.now)
+    created_at = Column(String,
+                        default=datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+    updated_at = Column(String,
+                        default=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                        onupdate=datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+    label = Column(String, default="undefined")
+    name = Column(String, default="undefined")
+    user = Column(String, default="undefined")
+    project = Column(String, default="undefined")
+
+
+    def __repr__(self):
+        print ("{} {} {} {}".format(self.id, self.name, self.kind, self.category))
+
 
 class CloudmeshDatabase(object):
 
@@ -59,6 +87,9 @@ class CloudmeshDatabase(object):
     @classmethod
     def table(cls, category=None, kind=None):
         """
+
+        :param category:
+        :param kind:
         :return: the table class based on a given table name.
                  In case the table does not exist an exception is thrown
         """
@@ -70,6 +101,7 @@ class CloudmeshDatabase(object):
     #
     # SESSION
     #
+    # noinspection PyPep8Naming
     @classmethod
     def start(cls):
         if cls.session is None:
@@ -78,7 +110,14 @@ class CloudmeshDatabase(object):
             cls.session = Session()
 
     @classmethod
-    def find(cls, **kwargs):
+    def find(cls,
+             scope='first',
+             category='general',
+             kind=None,
+             output='dict',
+             table=None,
+             **kwargs
+            ):
         """
         find (category="openstack", kind="vm", name="vm_002")
         find (VM_OPENSTACK, kind="vm", name="vm_002") # do not use this one its only used internally
@@ -89,12 +128,6 @@ class CloudmeshDatabase(object):
         :param kwargs:
         :return:
         """
-
-        scope = kwargs.pop('scope', 'first')
-        category = kwargs.pop('category', 'general')
-        kind = kwargs.pop('kind', None)
-        table = kwargs.pop('table', None)
-        output = kwargs.pop('output', 'dict')
 
         t = table
 

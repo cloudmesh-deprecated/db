@@ -13,7 +13,7 @@ def populate(cloud, _from,_to):
     global cm
     for i in range(_from, _to):
         t = CloudmeshDatabase.table(category=cloud, kind="vm")
-        vm = t("vm_" + str(i).zfill(3))
+        vm = t(name="vm_" + str(i).zfill(3))
 
         cm.add(vm)
 

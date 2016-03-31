@@ -1,6 +1,8 @@
 from ..CloudmeshDatabase import CloudmeshDatabase
 from sqlalchemy import Column, Date, Integer, String
 
+
+# noinspection PyPep8Naming
 class VM_OPENSTACK(CloudmeshDatabase.Base):
     __tablename__ = "vm_openstack"
     category = "openstack"
@@ -9,13 +11,10 @@ class VM_OPENSTACK(CloudmeshDatabase.Base):
     id = Column(Integer, primary_key=True)
     name = Column(String)
 
-    def __init__(self, name):
+    def __init__(self, name=None):
         self.name = name
 
-    def __repr__(self):
-        print ("{} {} {} {}".format(self.id, self.name, self.kind, self.category))
-
-
+# noinspection PyPep8Naming
 class IMAGE_OPENSTACK(CloudmeshDatabase.Base):
     __tablename__ = "image_openstack"
     category = "openstack"
@@ -24,9 +23,7 @@ class IMAGE_OPENSTACK(CloudmeshDatabase.Base):
     id = Column(Integer, primary_key=True)
     name = Column(String)
 
-    def __init__(self, name):
+    def __init__(self, name=None):
         self.name = name
 
-    def __repr__(self):
-        print ("{} {} {} {}".format(self.id, self.name, self.kind, self.category))
 
