@@ -1,14 +1,13 @@
 from __future__ import print_function
 
 from cloudmesh_client.common import Printer
-# from cloudmesh_client.db.SSHKeyDBManager import SSHKeyDBManager
-from cloudmesh_client.db import CloudmeshDatabase
-from cloudmesh_client.cloud.ListResource import ListResource
+from cloudmesh_client2.db import CloudmeshDatabase
+# from cloudmesh_client.cloud.ListResource import ListResource
 from cloudmesh_client.common.ConfigDict import ConfigDict
-
+from .provider import Attributes
 
 # noinspection PyBroadException
-class Var(ListResource):
+class Var(object):
     """
     Cloudmesh contains the concept of defaults. Defaults can have
     categories (we will rename cloud to categories). A category can be a
@@ -29,6 +28,7 @@ class Var(ListResource):
     def list(cls,
              format="table",
              order=None,
+             header=None,
              output=format):
         """
         lists the default values in the specified format.
@@ -43,14 +43,17 @@ class Var(ListResource):
         :return:
         """
         if order is None:
-            order = ['name', 'value', 'user']
+            order, header = None, None
+            #order, header = Attributes(cls.__kind__, provider=cls.__provider__)
         try:
-            d = cls.cm.all(cls.__kind__)
-            return (Printer.dict_printer(d,
+
+            result = cls.cm.all(category=cls.__general__, kind=cls.__kind__)
+            return (Printer.dict_printer(result,
                                          order=order,
                                          output=format))
         except:
             return None
+
 
     #
     # GENERAL SETTER AND GETTER METHOD
@@ -65,47 +68,28 @@ class Var(ListResource):
         :param user: the username to store this default value at.
         :return:
         """
-    
-        try:
-            o = cls.get_object(key)
 
-            me = cls.cm.user or user
+        print ("SET", key, value)
+        try:
+            o = cls.get(key, output='object', scope='first')
+            print ("OOO", o)
             if o is None:
-                o = cls.cm.db_obj_dict(cls.__kind__,
-                                       name=key,
-                                       value=value,
-                                       category=cls.__kind__,
-                                       user=me)
-                cls.cm.add_obj(o)
+                cls.cm.update(kind="vm",
+                             category=cls.__kind__,
+                             filter={'name': key},
+                             update={'value': value})
+
             else:
-                o.value = value
+                t = cls.cm.table(category=cls.__category__, kind=cls.__kind__)
+                o = t(name=key, value=value)
                 cls.cm.add(o)
-                # cls.cm.update(o)
             cls.cm.save()
         except:
-            return None
+            print("problem setting key value {}={}".format(key,value))
+
 
     @classmethod
-    def get_object(cls, key):
-        """
-        returns the first object that matches the key in teh Default
-        database.
-
-        :param key: The dictionary key
-        :param category: The category
-        :return:
-        """
-      
-        try:
-            o = cls.cm.find(kind=cls.__kind__,
-                            output='object',
-                            name=key).first()
-            return o
-        except Exception:
-            return None
-
-    @classmethod
-    def get(cls, key):
+    def get(cls, key, output='dict', scope='first'):
         """
         returns the value of the first objects matching the key
         with the given category.
@@ -116,14 +100,15 @@ class Var(ListResource):
         """
 
         o = cls.cm.find(kind=cls.__kind__,
-                        output='dict',
-                        scope='first',
+                        output=output,
+                        scope=scope,
                         name =key)
+        print ("PPP", o)
         if o is not None:
             return o['value']
         else:
             return None
-
+    '''
     @classmethod
     def delete(cls, key):
   
@@ -153,3 +138,4 @@ class Var(ListResource):
         except:
             return None
 
+    '''
