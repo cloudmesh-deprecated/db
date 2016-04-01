@@ -10,6 +10,25 @@ from pprint import pprint
 
 class Printer (object):
 
+
+    @classmethod
+    def write(cls,   table,
+                     order=None,
+                     header=None,
+                     output="table",
+                     sort_keys=True,
+                     show_none="",
+                     key="name"):
+        if type(table) == dict:
+            return cls.list(table, order=order, header=header, output=output,
+                            sort_keys=sort_keys, show_none=show_none, key=key)
+
+        elif type(table) == list:
+
+            return cls.list(table,
+                            order=order, header=header, output=output,
+                            sort_keys=sort_keys, show_none=show_none, key=key)
+
     @classmethod
     def list(cls,
                      l,

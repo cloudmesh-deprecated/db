@@ -15,7 +15,7 @@ for v in range(0,5):
 
 result = cm.all(category='general', kind='var')
 
-print (Printer.list(result))
+print (Printer.write(result))
 
 
 

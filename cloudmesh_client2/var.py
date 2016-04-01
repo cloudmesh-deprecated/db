@@ -1,12 +1,13 @@
 from __future__ import print_function
 
-from cloudmesh_client.common import Printer
+from cloudmesh_client2.common.Printer import Printer
 from cloudmesh_client2.db import CloudmeshDatabase
 # from cloudmesh_client.cloud.ListResource import ListResource
 from cloudmesh_client.common.ConfigDict import ConfigDict
 from .provider import Attributes
 from cloudmesh_client.shell.console import Console
 from cloudmesh_client.common.dotdict import dotdict
+
 # noinspection PyBroadException
 class Var(object):
     """
@@ -48,7 +49,7 @@ class Var(object):
         try:
             result = cls.cm.all(category=cls.__category__, kind=cls.__kind__)
 
-            return (Printer.list_printer(result,
+            return (Printer.write(result,
                                          order=order,
                                          output=output))
         except:
