@@ -15,9 +15,9 @@ cm.set(
 
 cm.info(kind=["var"])
 
-o = VAR("y", value="123")
-
-cm.info(kind=["var"])
+o = VAR(name="y", value="123")
+#cm.add(o)
+#cm.info(kind=["var"])
 
 '''
 Var.set("hallo", "world")

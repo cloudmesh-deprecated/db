@@ -17,7 +17,7 @@ class COUNTER(CloudmeshMixin, CloudmeshDatabase.Base):
                  name=None,
                  value=None,
                  user=None):
-        CloudmeshMixin.set_defaults(name=name, user=user)
+        super(COUNTER, self).set_defaults(name=name, user=user)
         self.value = int(value)
 
 
@@ -41,8 +41,7 @@ class DEFAULT(CloudmeshMixin, CloudmeshDatabase.Base):
                  value=None,
                  type=str,
                  user=None):
-
-        CloudmeshMixin.set_defaults(name=name, user=user)
+        super(DEFAULT, self).set_defaults(name=name, user=user)
         self.type = type or str
         self.value = self.type(value)
 
@@ -67,11 +66,11 @@ class VAR(CloudmeshMixin, CloudmeshDatabase.Base):
                  category="var",
                  type=str,
                  user=None):
-        CloudmeshMixin.set_defaults(name=name, user=user)
+        super(VAR, self).set_defaults(name=name, user=user)
         self.category = "general"
         self.kind = 'var'
 
-        self.type = type or str
+        self.type = type
         self.value = self.type(value)
 
 class LAUNCHER(CloudmeshMixin, CloudmeshDatabase.Base):
@@ -94,8 +93,7 @@ class LAUNCHER(CloudmeshMixin, CloudmeshDatabase.Base):
                  name=None,
                  user=None, 
                  parameters=None):
-
-        CloudmeshMixin.set_defaults(name=name, user=user)
+        super(LAUNCHER, self).set_defaults(name=name, user=user)
         self.parameters = parameters
         
 
@@ -123,7 +121,7 @@ class KEY(CloudmeshMixin, CloudmeshDatabase.Base):
                  category=None,
                  user=None,
                  is_default="False"):
-        CloudmeshMixin.set_defaults(name=name, user=user)
+        super(KEY, self).set_defaults(name=name, user=user)
         self.category = "general"
         self.kind = 'key'
 
@@ -151,7 +149,7 @@ class GROUP(CloudmeshMixin, CloudmeshDatabase.Base):
                  species=None,
                  category=None,
                  user=None):
-        CloudmeshMixin.set_defaults(name=name, user=user)
+        super(GROUP, self).set_defaults(name=name, user=user)
 
         self.category = "general"
 
@@ -180,8 +178,7 @@ class RESERVATION(CloudmeshMixin, CloudmeshDatabase.Base):
     def __init__(self, user=None, name=None, hosts=None,
                  start=None, end=None, description=None,
                  project=None):
-
-        CloudmeshMixin.set_defaults(name=name, user=user)
+        super(RESERVATION, self).set_defaults(name=name, user=user)
         self.category = "general"
         self.kind = 'reservation'
 
@@ -206,7 +203,7 @@ class SECGROUP(CloudmeshMixin, CloudmeshDatabase.Base):
                  uuid=None,
                  user=None,
                  project=None):
-        CloudmeshMixin.set_defaults(name=name, user=user)
+        super(SECGROUP, self).set_defaults(name=name, user=user)
 
 
         self.uuid = uuid
@@ -239,8 +236,7 @@ class SECGROUPRULE(CloudmeshMixin, CloudmeshDatabase.Base):
                  toPort=None,
                  protocol=None,
                  cidr=None):
-
-        CloudmeshMixin.set_defaults(name=name, user=user)
+        super(SECGROUPRULE, self).set_defaults(name=name, user=user)
         self.category = "general"
         self.kind = 'secgrouprule'
         self.uuid = uuid
@@ -281,7 +277,7 @@ class BATCHJOB(CloudmeshMixin, CloudmeshDatabase.Base):
                  category=None,
                  **kwargs
                  ):
-        CloudmeshMixin.set_defaults(name=name, user=user)
+        super(BATCHJOB, self).set_defaults(name=name, user=user)
         self.category = "general"
         self.kind = 'batchjob'
         self.provider = "slurm"
