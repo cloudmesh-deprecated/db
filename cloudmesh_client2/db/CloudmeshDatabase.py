@@ -42,7 +42,20 @@ class CloudmeshMixin(object):
 
 
     def __repr__(self):
-        print ("{} {} {} {}".format(self.id, self.name, self.kind, self.category))
+        try:
+            print ("{} {} {} {}".format(self.id, self.name, self.kind, self.category))
+        except:
+            print ("could not print object")
+
+
+    def __str__(self):
+        s = None
+        try:
+            s = dict(self.__dict__)
+            del s['_sa_instance_state']
+        except:
+            pass
+        return str(s)
 
 
 class CloudmeshDatabase(object):

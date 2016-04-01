@@ -58,20 +58,20 @@ class VAR(CloudmeshMixin, CloudmeshDatabase.Base):
     __provider__ = 'general'
 
     value = Column(String)
-    type = Column(String, default="string")
+    type = Column(String, default="str")
 
     def __init__(self,
                  name=None,
                  value=None,
                  category="var",
-                 type=str,
+                 type="str",
                  user=None):
         super(VAR, self).set_defaults(name=name, user=user)
         self.category = "general"
         self.kind = 'var'
 
-        self.type = type
-        self.value = self.type(value)
+        self.type = str(type)
+        self.value = str(value)
 
 class LAUNCHER(CloudmeshMixin, CloudmeshDatabase.Base):
     """table to store default values
@@ -164,7 +164,6 @@ class RESERVATION(CloudmeshMixin, CloudmeshDatabase.Base):
     
     __tablename__ = "reservation"
 
-
     __category__ = "general"
     __kind__ = 'counter'
     __provider__ = 'general'
@@ -213,7 +212,6 @@ class SECGROUP(CloudmeshMixin, CloudmeshDatabase.Base):
 class SECGROUPRULE(CloudmeshMixin, CloudmeshDatabase.Base):
     __tablename__ = "secgrouprule"
 
-
     __category__ = "general"
     __kind__ = 'secgrouprule'
     __provider__ = 'general'
@@ -251,7 +249,6 @@ class SECGROUPRULE(CloudmeshMixin, CloudmeshDatabase.Base):
 class BATCHJOB(CloudmeshMixin, CloudmeshDatabase.Base):
 
     __tablename__ = "batchjob"
-
 
     __category__ = "general"
     __kind__ = 'batchjob'
