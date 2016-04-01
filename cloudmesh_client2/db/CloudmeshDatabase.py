@@ -180,6 +180,7 @@ class CloudmeshDatabase(object):
 
         if category is not None and kind is not None:
             t = cls.table(category=category, kind=kind)
+            print ("T", t)
         else:
             data = {
                 "category": category,
@@ -187,7 +188,12 @@ class CloudmeshDatabase(object):
             }
             ValueError("find is improperly used category={category} kind={kind}"
                        .format(**data))
+        print ("R", t, kind, category)
         result = cls.session.query(t).all()
+        print (result is None)
+        print ("Q", type(result))
+        for e in result:
+            print("E", len(result), e)
         return cls.to_list(result)
 
     @classmethod
@@ -229,7 +235,7 @@ class CloudmeshDatabase(object):
         if scope == 'first':
             result = elements.first()
             if output == 'dict':
-                result = cls.to_list([result])[0]
+                result = dotdict(cls.to_list([result])[0])
         elif output == 'dict':
             result =  cls.to_list(elements)
 
@@ -342,7 +348,7 @@ class CloudmeshDatabase(object):
                     if not key.startswith("_sa"):
                         values[key] = u.__dict__[key]
                 result.append(values)
-                # pprint(result)
+                pprint(result)
         return result
 
     #

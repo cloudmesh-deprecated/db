@@ -6,7 +6,7 @@ from cloudmesh_client2.db import CloudmeshDatabase
 from cloudmesh_client.common.ConfigDict import ConfigDict
 from .provider import Attributes
 from cloudmesh_client.shell.console import Console
-
+from cloudmesh_client.common.dotdict import dotdict
 # noinspection PyBroadException
 class Var(object):
     """
@@ -42,16 +42,21 @@ class Var(object):
         :param output: The output format.
         :return:
         """
+        print ("KKKKK")
         if order is None:
             order, header = None, None
             # order, header = Attributes(cls.__kind__, provider=cls.__provider__)
         try:
+            print ("search")
+            result = cls.cm.all(category=cls.__category__, kind=cls.__kind__)
+            print ("ok")
+            print ("LLLL", result, cls.__category__, cls.__kind__)
 
-            result = cls.cm.all(category=cls.__general__, kind=cls.__kind__)
-            return (Printer.dict_printer(result,
+            return (Printer.list_printer(result,
                                          order=order,
-                                         output=format))
+                                         output=output))
         except:
+            Console.error("?")
             return None
 
     #

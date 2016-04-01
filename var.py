@@ -19,9 +19,16 @@ cm.info(kind=["var"])
 
 
 Var.set("y", "456")
+# Var.set("z", "789")
 
 result = cm.all(category='general', kind='var')
 print (result)
+
+
+r = Var.get("y")
+
+print ("RRRR", r.value)
+
 
 
 print(Var.list())
