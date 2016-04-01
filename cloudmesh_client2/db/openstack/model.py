@@ -94,6 +94,7 @@ class IMAGE_OPENSTACK(CloudmeshMixin, CloudmeshDatabase.Base):
                 self[key] = value"""
 
 
+# noinspection PyPep8Naming
 class FLAVOR_OPENSTACK(CloudmeshMixin, CloudmeshDatabase.Base):
     __tablename__ = "flavor_openstack"
 
@@ -135,6 +136,8 @@ class FLAVOR_OPENSTACK(CloudmeshMixin, CloudmeshDatabase.Base):
                 print ("{} = {}".format(key, value))
                 self[key] = value"""
 
+
+# noinspection PyPep8Naming
 class VM_OPENSTACK(CloudmeshMixin, CloudmeshDatabase.Base):
     __tablename__ = "vm_openstack"
 

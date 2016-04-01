@@ -2,8 +2,8 @@ from .general.attributes import Attributes as GeneralAttributes
 from .openstack.attributes import Attributes as OpenstackAttributes
 from .libcloud.attributes import Attributes as LibcloudAttributes
 
-class Attributes(object):
 
+class Attributes(object):
     @classmethod
     def get(cls, kind, provider='general'):
         if provider == "general":

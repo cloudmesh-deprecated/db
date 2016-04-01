@@ -2,6 +2,7 @@ from ..CloudmeshDatabase import CloudmeshDatabase, CloudmeshMixin
 from sqlalchemy import Column, Date, Integer, String
 
 
+# noinspection PyPep8Naming
 class IMAGE_LIBCLOUD(CloudmeshMixin, CloudmeshDatabase.Base):
     __tablename__ = "image_libcloud"
 
@@ -34,7 +35,6 @@ class IMAGE_LIBCLOUD(CloudmeshMixin, CloudmeshDatabase.Base):
                  **kwargs):
         super(IMAGE_LIBCLOUD, self).set_defaults(name=name, user=user)
 
-
         self.status = kwargs.get('status')
         self.architecture = kwargs.get('architecture')
         self.description = kwargs.get('description')
@@ -50,6 +50,8 @@ class IMAGE_LIBCLOUD(CloudmeshMixin, CloudmeshDatabase.Base):
         self.ramdisk_id = kwargs.get('ramdisk_id')
         self.state = kwargs.get('state')
 
+
+# noinspection PyPep8Naming
 class FLAVOR_LIBCLOUD(CloudmeshMixin, CloudmeshDatabase.Base):
     __tablename__ = "flavor_libcloud"
 
@@ -80,7 +82,7 @@ class FLAVOR_LIBCLOUD(CloudmeshMixin, CloudmeshDatabase.Base):
         self.cpu = kwargs.get("cpu")
 
 
-
+# noinspection PyPep8Naming
 class VM_LIBCLOUD(CloudmeshMixin, CloudmeshDatabase.Base):
     __tablename__ = "vm_libcloud"
 
@@ -104,9 +106,7 @@ class VM_LIBCLOUD(CloudmeshMixin, CloudmeshDatabase.Base):
     status = Column(String)
 
     def __init__(self, name=None, user=None, **kwargs):
-
         super(VM_LIBCLOUD, self).set_defaults(name=name, user=user)
-
 
         self.uuid = kwargs.get("node_id")
         self.state = kwargs.get("state")
@@ -122,4 +122,3 @@ class VM_LIBCLOUD(CloudmeshMixin, CloudmeshDatabase.Base):
         self.root_device_name = kwargs.get("root_device_name")
         self.root_device_type = kwargs.get("root_device_type")
         self.status = kwargs.get("status")
-

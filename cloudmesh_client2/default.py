@@ -2,13 +2,12 @@ from __future__ import print_function
 
 from cloudmesh_client.common import Printer
 # from cloudmesh_client.db.SSHKeyDBManager import SSHKeyDBManager
-import  cloudmesh_client
+import cloudmesh_client
 from cloudmesh_client.cloud.ListResource import ListResource
 from cloudmesh_client.common.ConfigDict import ConfigDict
 
 # from cloudmesh_client.cloud.iaas.CloudProvider import CloudProvider
 from cloudmesh_client.db import CloudmeshDatabase
-
 
 
 # noinspection PyBroadException
@@ -44,7 +43,7 @@ class Default(ListResource):
         :param output: The output format. json, table, yaml, dict, csv
         :return:
         """
-    
+
         if order is None:
             # (order, header) = CloudProvider(category).get_attributes(cls.__kind__)
             order = ['user',
@@ -77,7 +76,7 @@ class Default(ListResource):
         :param user: the username to store this default value at.
         :return:
         """
-        
+
         try:
 
             o = cls.get_object(key, category)
@@ -107,7 +106,7 @@ class Default(ListResource):
         :param category: The category
         :return:
         """
-        
+
         try:
             o = cls.cm.find(category=category,
                             kind=cls.__kind__,
@@ -129,7 +128,7 @@ class Default(ListResource):
         :return:
         """
 
-        o = cls.cm.find(category= category,
+        o = cls.cm.find(category=category,
                         kind=cls.__kind__,
                         output='dict',
                         scope='first',

@@ -1,19 +1,18 @@
 class Attributes(object):
-
     @classmethod
     def get(cls, kind):
         layout = {
             'default': {
                 'order': ['user',
-                         'category',
-                         'name',
-                         'value',
-                         'updated_at'],
+                          'category',
+                          'name',
+                          'value',
+                          'updated_at'],
                 'header': ['User',
-                        'Category',
-                        'Name',
-                        'Value',
-                        'Updated']
+                           'Category',
+                           'Name',
+                           'Value',
+                           'Updated']
             },
             'var': {
                 'order': ['user',

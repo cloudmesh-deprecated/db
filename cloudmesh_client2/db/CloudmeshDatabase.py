@@ -10,6 +10,7 @@ from sqlalchemy.orm import sessionmaker
 from pprint import pprint
 from sqlalchemy import update
 
+
 class CloudmeshMixin(object):
     __mapper_args__ = {'always_refresh': True}
 
@@ -33,20 +34,18 @@ class CloudmeshMixin(object):
     project = Column(String, default="undefined")
 
     def set_defaults(self, **kwargs):
-        self.user = kwargs.get('user') or  CloudmeshDatabase.user
+        self.user = kwargs.get('user') or CloudmeshDatabase.user
         self.name = kwargs['name']
         self.label = kwargs['name']
         self.category = self.__category__
         self.kind = self.__kind__
         self.provider = self.__provider__
 
-
     def __repr__(self):
         try:
-            print ("{} {} {} {}".format(self.id, self.name, self.kind, self.category))
+            print("{} {} {} {}".format(self.id, self.name, self.kind, self.category))
         except:
-            print ("could not print object")
-
+            print("could not print object")
 
     def __str__(self):
         s = None
@@ -59,8 +58,6 @@ class CloudmeshMixin(object):
 
 
 class CloudmeshDatabase(object):
-
-
     '''
 
     def __init__(self, user=None):
@@ -121,7 +118,7 @@ class CloudmeshDatabase(object):
     @classmethod
     def create_model(cls):
         cls.Base.metadata.create_all(cls.engine)
-        print ("Model created")
+        print("Model created")
 
     @classmethod
     def clean(cls):
@@ -136,18 +133,17 @@ class CloudmeshDatabase(object):
 
     @classmethod
     def info(cls, kind=None):
-        print ()
-        print ("Info")
-        print ()
+        print()
+        print("Info")
+        print()
         print("{:<20} {:<15} {:<15} {:<4}".format("tablename", "category", "kind", "count"))
-        print (70 * "=")
+        print(70 * "=")
 
         for t in cls.tables:
             if kind is None or t.__kind__ in kind:
                 count = cls.session.query(t).count()
-                print ("{:<20} {:<15} {:<15} {:<4}".format(t.__tablename__, t.__category__, t.__kind__, count))
+                print("{:<20} {:<15} {:<15} {:<4}".format(t.__tablename__, t.__category__, t.__kind__, count))
         print()
-
 
     @classmethod
     def table(cls, category=None, kind=None):
@@ -162,6 +158,7 @@ class CloudmeshDatabase(object):
             if (t.__kind__ == kind) and (t.__category__ == category):
                 return t
         ValueError("ERROR: unkown table {} {}".format(category, kind))
+
     #
     # SESSION
     #
@@ -169,9 +166,10 @@ class CloudmeshDatabase(object):
     @classmethod
     def start(cls):
         if cls.session is None:
-            print ("start session")
+            print("start session")
             Session = sessionmaker(bind=cls.engine)
             cls.session = Session()
+
     @classmethod
     def all(cls,
             category='general',
@@ -200,7 +198,7 @@ class CloudmeshDatabase(object):
              output='dict',
              table=None,
              **kwargs
-            ):
+             ):
         """
         find (category="openstack", kind="vm", name="vm_002")
         find (VM_OPENSTACK, kind="vm", name="vm_002") # do not use this one its only used internally
@@ -226,16 +224,16 @@ class CloudmeshDatabase(object):
             ValueError("find is improperly used category={category} kind={kind} table={table} args={args}"
                        .format(**data))
 
-        result = cls.session.query(t).filter_by(**kwargs)
+        elements = cls.session.query(t).filter_by(**kwargs)
 
-        if scope=='first':
-            result =  result.first()
+        if scope == 'first':
+            result = elements.first()
             if output == 'dict':
                 result = cls.to_list([result])[0]
         elif output == 'dict':
-            return cls.to_list(result)
-        else:
-            return result
+            result =  cls.to_list(elements)
+
+        return result
 
     @classmethod
     def x_find(cls, **kwargs):
@@ -294,8 +292,33 @@ class CloudmeshDatabase(object):
         return objects
 
     @classmethod
-    def add(cls, o):
-        cls.session.add(o)
+    def add(cls, o, replace=True):
+
+        if o is None:
+            return
+        print("HHHH", o.name, o.category, o.kind, o)
+        if replace:
+            current = cls.find(
+                scope='first',
+                category=o.category,
+                kind=o.kind,
+                output='object',
+                name=o.name
+            )
+
+            print("PPP", current, type(current))
+            if current is not None:
+
+                print("FFF", current)
+                for key in o.__dict__.keys():
+                    current.__dict__[key] = o.__dict__[key]
+                cls.save()
+            else:
+                print("simply add")
+                cls.session.add(o)
+        else:
+            print("ADD O")
+            cls.session.add(o)
         cls.save()
 
     @classmethod
@@ -319,7 +342,7 @@ class CloudmeshDatabase(object):
                     if not key.startswith("_sa"):
                         values[key] = u.__dict__[key]
                 result.append(values)
-            # pprint(result)
+                # pprint(result)
         return result
 
     #
@@ -388,17 +411,17 @@ class CloudmeshDatabase(object):
             category=None,
             kind=None,
             ):
-        print ("SSS")
+        print("SSS")
         if category is None or kind is None:
             print("FIND")
             o = cls.filter_by(name=name)
-            print ("A", o)
-            print ("B", o.name)
-            print ("C", o.kind)
+            print("A", o)
+            print("B", o.name)
+            print("C", o.kind)
 
             cls.update(kind=o.kind,
-                      category=o.category,
-                      filter={'name': name},
-                      update={'label': 'x',
-                              attribute: value}
-                      )
+                       category=o.category,
+                       filter={'name': name},
+                       update={'label': 'x',
+                               attribute: value}
+                       )
