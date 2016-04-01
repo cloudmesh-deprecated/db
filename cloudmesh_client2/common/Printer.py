@@ -36,22 +36,22 @@ class Printer (object):
             d[name] = entry
             count += 1
 
-        return cls.dict_printer(d,
-                            order=order,
-                            header=header,
-                            sort_keys=sort_keys,
-                            output=output,
-                            show_none=show_none)
+        return cls.dict(d,
+                        order=order,
+                        header=header,
+                        sort_keys=sort_keys,
+                        output=output,
+                        show_none=show_none)
 
 
     @classmethod
-    def dict_printer(cls,
-                     d,
-                     order=None,
-                     header=None,
-                     output="table",
-                     sort_keys=True,
-                     show_none=""):
+    def dict(cls,
+             d,
+             order=None,
+             header=None,
+             output="table",
+             sort_keys=True,
+             show_none=""):
         """
         TODO
         :param d: A a dict with dicts of the same type.
@@ -71,15 +71,15 @@ class Printer (object):
             if d == {}:
                 return None
             else:
-                return cls.dict_table_printer(d,
-                                          order=order,
-                                          header=header,
-                                          sort_keys=sort_keys)
+                return cls.dict_table(d,
+                                      order=order,
+                                      header=header,
+                                      sort_keys=sort_keys)
         elif output == "csv":
-            return cls.dict_csv_printer(d,
-                                    order=order,
-                                    header=header,
-                                    sort_keys=sort_keys)
+            return cls.csv(d,
+                           order=order,
+                           header=header,
+                           sort_keys=sort_keys)
         elif output == "json":
             return json.dumps(d, sort_keys=sort_keys, indent=4)
         elif output == "yaml":
@@ -91,11 +91,11 @@ class Printer (object):
 
 
     @classmethod
-    def dict_csv_printer(cls,
-                         d,
-                         order=None,
-                         header=None,
-                         sort_keys=True):
+    def csv(cls,
+            d,
+            order=None,
+            header=None,
+            sort_keys=True):
         """
         prints a table in csv format
 
@@ -151,13 +151,13 @@ class Printer (object):
         return table
 
     @classmethod
-    def dict_table_printer(cls,
-                           d,
-                           order=None,
-                           header=None,
-                           sort_keys=True,
-                           show_none="",
-                           max_width=40):
+    def dict_table(cls,
+                   d,
+                   order=None,
+                   header=None,
+                   sort_keys=True,
+                   show_none="",
+                   max_width=40):
         """prints a pretty table from an dict of dicts
         :param d: A a dict with dicts of the same type.
                       Each key will be a column
@@ -222,11 +222,11 @@ class Printer (object):
         return x
 
     @classmethod
-    def attribute_printer(cls,
-                          d,
-                          header=None,
-                          sort_keys=True,
-                          output="table"):
+    def attribute(cls,
+                  d,
+                  header=None,
+                  sort_keys=True,
+                  output="table"):
         if header is None:
             header = ["Attribute", "Value"]
         if output == "table":
@@ -241,7 +241,7 @@ class Printer (object):
             x.align = "l"
             return x
         else:
-            return cls.dict_printer({output: d}, output=output)
+            return cls.dict({output: d}, output=output)
 
     @classmethod
     def print_list(cls, l, output='table'):
