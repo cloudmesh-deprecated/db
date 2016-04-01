@@ -34,9 +34,10 @@ class CloudmeshMixin(object):
     project = Column(String, default="undefined")
 
     def set_defaults(self, **kwargs):
-        self.user = kwargs.get('user') or CloudmeshDatabase.user
-        self.name = kwargs['name']
-        self.label = kwargs['name']
+        self.user = kwargs.get('user', CloudmeshDatabase.user)
+        self.name = kwargs.get('name', 'undefined')
+        self.label = kwargs.get('name', 'undefined')
+        self.category = kwargs.get('category', 'undefined')
         self.kind = self.__kind__
         self.provider = self.__provider__
 

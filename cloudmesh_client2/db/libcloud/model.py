@@ -29,10 +29,8 @@ class IMAGE_LIBCLOUD(CloudmeshMixin, CloudmeshDatabase.Base):
     virtualization_type = Column(String)
 
     def __init__(self,
-                 name=None,
-                 user=None,
                  **kwargs):
-        super(IMAGE_LIBCLOUD, self).set_defaults(name=name, user=user)
+        super(IMAGE_LIBCLOUD, self).set_defaults(**kwargs)
 
         self.status = kwargs.get('status')
         self.architecture = kwargs.get('architecture')
@@ -66,10 +64,8 @@ class FLAVOR_LIBCLOUD(CloudmeshMixin, CloudmeshDatabase.Base):
     cpu = Column(String)
 
     def __init__(self,
-                 name=None,
-                 user=None,
                  **kwargs):
-        super(FLAVOR_LIBCLOUD, self).set_defaults(name=name, user=user)
+        super(FLAVOR_LIBCLOUD, self).set_defaults(**kwargs)
 
         self.uuid = kwargs.get("uuid")
         self.flavor_id = kwargs.get("flavor_id")
@@ -102,8 +98,8 @@ class VM_LIBCLOUD(CloudmeshMixin, CloudmeshDatabase.Base):
     root_device_type = Column(String)
     status = Column(String)
 
-    def __init__(self, name=None, user=None, **kwargs):
-        super(VM_LIBCLOUD, self).set_defaults(name=name, user=user)
+    def __init__(self, **kwargs):
+        super(VM_LIBCLOUD, self).set_defaults(**kwargs)
 
         self.uuid = kwargs.get("node_id")
         self.state = kwargs.get("state")

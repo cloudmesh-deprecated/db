@@ -7,20 +7,19 @@ echo = False
 cm = CloudmeshDatabase()
 
 
-def populate(cloud, _from, _to):
+def populate(cloud, _from, _to, category):
     global cm
     for i in range(_from, _to):
         t = CloudmeshDatabase.table(provider=cloud, kind="vm")
         name = "vm_" + str(i).zfill(3)
         print ("N", name, t)
-        vm = t(name=name)
+        vm = t(name=name, category=category)
 
         cm.add(vm)
 
 
-populate("openstack", 0, 10)
-populate("libcloud", 10, 20)
-
+populate("openstack", 0, 10, "kilo")
+populate("libcloud", 10, 20, "cloud_b")
 
 cm.info()
 vms = cm.x_find(kind="vm", scope="all")
