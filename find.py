@@ -1,7 +1,7 @@
 from pprint import pprint
 
 from cloudmesh_client2.db import CloudmeshDatabase
-
+from cloudmesh_client.common.Printer import list_printer
 echo = False
 
 cm = CloudmeshDatabase()
@@ -102,3 +102,13 @@ cm.set("vm_002", 'user', 'world')
 
 vm = cm.x_find(kind="vm", scope="first", name="vm_002")
 pprint(vm)
+
+
+vms = cm.x_find(kind="vm", scope="all")
+print (len(vms))
+
+
+
+print (list_printer(vms,
+                    order=['name', 'status', 'category', 'user', 'provider', 'kind', 'status', 'xx'],
+                    output='table'))

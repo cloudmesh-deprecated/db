@@ -227,23 +227,13 @@ class CloudmeshDatabase(object):
                        .format(**data))
         print ("=============")
         print ("QQQQQQ", kwargs)
-        print(scope,
-              category,
-              kind,
-              output,
-              table,
-              kwargs
-              )
         print("=============")
 
         elements = cls.session.query(t).filter_by(**kwargs)
 
-        print ("EEE", elements)
-
         if scope == 'first':
             result = elements.first()
             if output == 'dict':
-                print ("YYYY", cls.to_list([result]))
                 result = dotdict(cls.to_list([result])[0])
         elif output == 'dict':
             result =  cls.to_list(elements)
