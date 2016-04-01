@@ -122,7 +122,7 @@ class CloudmeshDatabase(object):
         cls.tables = [c for c in cls.Base.__subclasses__()]
 
     @classmethod
-    def info(cls):
+    def info(cls, kind=None):
         print ()
         print ("Info")
         print ()
@@ -130,8 +130,9 @@ class CloudmeshDatabase(object):
         print (70 * "=")
 
         for t in cls.tables:
-            count = cls.session.query(t).count()
-            print ("{:<20} {:<15} {:<15} {:<4}".format(t.__tablename__, t.__category__, t.__kind__, count))
+            if kind is None or t.__kind__ in kind:
+                count = cls.session.query(t).count()
+                print ("{:<20} {:<15} {:<15} {:<4}".format(t.__tablename__, t.__category__, t.__kind__, count))
         print()
 
 
@@ -374,12 +375,13 @@ class CloudmeshDatabase(object):
             category=None,
             kind=None,
             ):
-
+        print ("SSS")
         if category is None or kind is None:
+            print("FIND")
             o = cls.filter_by(name=name)
-            print (o)
-            print (o.name)
-            print (o.kind)
+            print ("A", o)
+            print ("B", o.name)
+            print ("C", o.kind)
 
             cls.update(kind=o.kind,
                       category=o.category,
