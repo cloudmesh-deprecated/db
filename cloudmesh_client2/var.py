@@ -46,7 +46,7 @@ class Var(object):
             order, header = None, None
             # order, header = Attributes(cls.__kind__, provider=cls.__provider__)
         try:
-            result = cls.cm.all(provider=cls.__provider, kind=cls.__kind__)
+            result = cls.cm.all(provider=cls.__provider__, kind=cls.__kind__)
 
             return (Printer.write(result,
                                          order=order,
@@ -70,17 +70,14 @@ class Var(object):
         """
         try:
             o = cls.get(name=key)
-            print ("------PPPP", o)
             if o is not None:
-                print ("UPDATE")
                 cls.cm.update(kind=cls.__kind__,
-                              provider=cls.__provider,
+                              provider=cls.__provider__,
                               filter={'name': key},
                               update={'value': value})
 
             else:
-                print ("CREATE")
-                t = cls.cm.table(provider=cls.__provider, kind=cls.__kind__)
+                t = cls.cm.table(provider=cls.__provider__, kind=cls.__kind__)
                 o = t(name=key, value=value)
                 cls.cm.add(o)
             cls.cm.save()
@@ -97,19 +94,17 @@ class Var(object):
         :param category: The category
         :return:
         """
-        print ("UUUUU")
         o = cls.cm.find(kind=cls.__kind__,
-                        provider=cls.__provider,
+                        provider=cls.__provider__,
                         output=output,
                         scope=scope,
                         name=name)
-        print ("WWWWW")
         return o
 
 
     @classmethod
     def delete(cls, name):
-        cls.cm.delete(name=name, provider=cls.__provider, kind=cls.__kind__)
+        cls.cm.delete(name=name, provider=cls.__provider__, kind=cls.__kind__)
 
 
     @classmethod
@@ -118,5 +113,5 @@ class Var(object):
         deletes all default values in the database.
         :return:
         """
-        cls.cm.delete(provider=cls.__provider, kind=cls.__kind__)
+        cls.cm.delete(provider=cls.__provider__, kind=cls.__kind__)
 

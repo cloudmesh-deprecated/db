@@ -9,7 +9,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from pprint import pprint
 from sqlalchemy import update
-
+from cloudmesh_client.shell.console import Console
 
 class CloudmeshMixin(object):
     __mapper_args__ = {'always_refresh': True}
@@ -45,7 +45,7 @@ class CloudmeshMixin(object):
         try:
             print("{} {} {} {}".format(self.id, self.name, self.kind, self.category))
         except:
-            print("could not print object")
+            Console.error("could not print object")
 
     def __str__(self):
         s = None
@@ -241,14 +241,13 @@ class CloudmeshDatabase(object):
             }
             ValueError("find is improperly used provider={provider} kind={kind} table={table} args={args}"
                        .format(**data))
-        print ("=============")
-        print ("QQQQQQ", kwargs)
-        print("=============")
 
         elements = cls.session.query(t).filter_by(**kwargs)
 
         if scope == 'first':
             result = elements.first()
+            if result is None:
+                return None
             if output == 'dict':
                 result = dotdict(cls.to_list([result])[0])
         elif output == 'dict':
@@ -317,7 +316,6 @@ class CloudmeshDatabase(object):
 
         if o is None:
             return
-        print("HHHH", o.name, o.provider, o.kind, o)
         if replace:
             current = cls.find(
                 scope='first',
@@ -327,18 +325,13 @@ class CloudmeshDatabase(object):
                 name=o.name
             )
 
-            print("PPP", current, type(current))
             if current is not None:
-
-                print("FFF", current)
                 for key in o.__dict__.keys():
                     current.__dict__[key] = o.__dict__[key]
                 cls.save()
             else:
-                print("simply add")
                 cls.session.add(o)
         else:
-            print("ADD O")
             cls.session.add(o)
         cls.save()
 
@@ -431,13 +424,8 @@ class CloudmeshDatabase(object):
             provider=None,
             kind=None,
             ):
-        print("SSS")
         if provider is None or kind is None:
-            print("FIND")
             o = cls.filter_by(name=name)
-            print("A", o)
-            print("B", o.name)
-            print("C", o.kind)
 
             cls.update(kind=o.kind,
                        provider=o.provider,
@@ -445,3 +433,4 @@ class CloudmeshDatabase(object):
                        update={'label': 'x',
                                attribute: value}
                        )
+

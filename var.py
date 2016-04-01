@@ -18,46 +18,28 @@ result = cm.all(provider='general', kind='var')
 print (Printer.write(result))
 
 
-
-print (result)
-
 cm.info(kind=["var"])
 
 
+print (result)
+
+
 Var.set("y", "456")
-#Var.set("z", "789")
+Var.set("z", "890")
+
+
+Var.set("z", "789")
 
 result = cm.all(provider='general', kind='var')
 print (result)
 
 
-#r = Var.get("y")
+r = Var.get("y")
 
-#print ("RRRR", r.value)
+print ("y", r.value)
 
+cm.set("y","value","42",kind="var")
 
 
 print(Var.list())
 
-# print (o)
-
-'''
-cm.set(
-    "x",
-    "value",
-    "42",
-    category="general",
-    kind="var",
-)
-
-
-
-print (o)
-#cm.add(o)
-#cm.info(kind=["var"])
-
-
-print (Var.list())
-
-cm.info()
-'''
