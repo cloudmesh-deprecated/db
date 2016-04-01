@@ -121,4 +121,4 @@ class VM_LIBCLOUD(CloudmeshMixin, CloudmeshDatabase.Base):
         self.private_dns = kwargs.get("private_dns")
         self.root_device_name = kwargs.get("root_device_name")
         self.root_device_type = kwargs.get("root_device_type")
-        self.status = kwargs.get("status")
+        self.status = kwargs.get("status", "defined")

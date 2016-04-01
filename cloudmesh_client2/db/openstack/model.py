@@ -206,6 +206,6 @@ class VM_OPENSTACK(CloudmeshMixin, CloudmeshDatabase.Base):
         self.tenant_id = kwargs.get("tenant_id", None)
         self.updated = kwargs.get("updated", None)
         self.user_id = kwargs.get("user_id", None)
-
+        self.status = kwargs.get("status", "defined")
 
 
