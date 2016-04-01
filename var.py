@@ -13,7 +13,7 @@ for v in range(0,5):
     cm.add(o)
     print ("{}={}".format(o.name, o.value))
 
-result = cm.all(category='general', kind='var')
+result = cm.all(provider='general', kind='var')
 
 print (Printer.write(result))
 
@@ -27,7 +27,7 @@ cm.info(kind=["var"])
 Var.set("y", "456")
 #Var.set("z", "789")
 
-result = cm.all(category='general', kind='var')
+result = cm.all(provider='general', kind='var')
 print (result)
 
 

@@ -21,7 +21,6 @@ class Default(ListResource):
 
     """
 
-    __category__ = "general"
     __kind__ = "default"
     __provider__ = "general"
 

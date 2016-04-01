@@ -5,7 +5,6 @@ from sqlalchemy import Column, Date, Integer, String
 
 class COUNTER(CloudmeshMixin, CloudmeshDatabase.Base):
     __tablename__ = "counter"
-    __category__ = "general"
     __kind__ = 'counter'
     __provider__ = 'general'
 
@@ -28,7 +27,6 @@ class DEFAULT(CloudmeshMixin, CloudmeshDatabase.Base):
     todo: check if its global or general
     """
     __tablename__ = "default"
-    __category__ = "general"
     __kind__ = 'default'
     __provider__ = 'general'
 
@@ -52,7 +50,7 @@ class VAR(CloudmeshMixin, CloudmeshDatabase.Base):
     # name defined in mixin
 
     __tablename__ = "var"
-    __category__ = "general"
+
     __kind__ = 'var'
     __provider__ = 'general'
 
@@ -79,7 +77,7 @@ class LAUNCHER(CloudmeshMixin, CloudmeshDatabase.Base):
     """
     
     __tablename__ = "launcher"
-    __category__ = "general"
+
     __kind__ = 'launcher'
     __provider__ = 'general'
 
@@ -97,7 +95,7 @@ class LAUNCHER(CloudmeshMixin, CloudmeshDatabase.Base):
 class KEY(CloudmeshMixin, CloudmeshDatabase.Base):
     
     __tablename__ = "key"
-    __category__ = "general"
+
     __kind__ = 'key'
     __provider__ = 'general'
 
@@ -131,7 +129,7 @@ class KEY(CloudmeshMixin, CloudmeshDatabase.Base):
 class GROUP(CloudmeshMixin, CloudmeshDatabase.Base):
     
     __tablename__ = "group"
-    __category__ = "general"
+
     __kind__ = 'counter'
     __provider__ = 'general'
     
@@ -155,7 +153,7 @@ class RESERVATION(CloudmeshMixin, CloudmeshDatabase.Base):
     
     __tablename__ = "reservation"
 
-    __category__ = "general"
+
     __kind__ = 'counter'
     __provider__ = 'general'
 
@@ -179,7 +177,7 @@ class RESERVATION(CloudmeshMixin, CloudmeshDatabase.Base):
 class SECGROUP(CloudmeshMixin, CloudmeshDatabase.Base):
     
     __tablename__ = "secgroup"
-    __category__ = "general"
+
     __kind__ = 'secgroup'
     __provider__ = 'general'
 
@@ -200,7 +198,7 @@ class SECGROUP(CloudmeshMixin, CloudmeshDatabase.Base):
 class SECGROUPRULE(CloudmeshMixin, CloudmeshDatabase.Base):
     __tablename__ = "secgrouprule"
 
-    __category__ = "general"
+
     __kind__ = 'secgrouprule'
     __provider__ = 'general'
 
@@ -236,7 +234,7 @@ class BATCHJOB(CloudmeshMixin, CloudmeshDatabase.Base):
 
     __tablename__ = "batchjob"
 
-    __category__ = "general"
+
     __kind__ = 'batchjob'
     __provider__ = 'general'
 

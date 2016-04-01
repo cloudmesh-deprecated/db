@@ -62,7 +62,7 @@ cm.delete(kind="vm", provider="openstack", label="vm_004")
 cm.info()
 
 cm.update(kind="vm",
-          category="openstack",
+          provider="openstack",
           filter={'name': "vm_002"},
           update={'label': 'x'}
           )
@@ -71,7 +71,7 @@ vm = cm.x_find(kind="vm", scope="first", name="vm_002")
 pprint(vm)
 
 cm.update(kind="vm",
-          category="openstack",
+          provider="openstack",
           filter={'name': "vm_002"},
           update={'label': 'x',
                   'uuid': 'a'}
@@ -81,7 +81,7 @@ vm = cm.x_find(kind="vm", scope="first", name="vm_002")
 pprint(vm)
 
 cm.update(kind="vm",
-          category="openstack",
+          provider="openstack",
           filter={'name': "vm_002",
                   'name': "vm_009",},
           update={'label': 'x',
@@ -93,7 +93,7 @@ pprint(vm)
 vm = cm.x_find(kind="vm", scope="first", name="vm_009")
 pprint(vm)
 
-cm.set("vm_009", 'user', 'gregor', category='openstack', kind='vm')
+cm.set("vm_009", 'user', 'gregor', provider='openstack', kind='vm')
 
 vm = cm.x_find(kind="vm", scope="first", name="vm_009")
 pprint(vm)

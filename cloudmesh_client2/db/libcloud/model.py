@@ -6,7 +6,6 @@ from sqlalchemy import Column, Date, Integer, String
 class IMAGE_LIBCLOUD(CloudmeshMixin, CloudmeshDatabase.Base):
     __tablename__ = "image_libcloud"
 
-    __category__ = "undefined"
     __kind__ = 'image'
     __provider__ = "libcloud"
 
@@ -55,7 +54,6 @@ class IMAGE_LIBCLOUD(CloudmeshMixin, CloudmeshDatabase.Base):
 class FLAVOR_LIBCLOUD(CloudmeshMixin, CloudmeshDatabase.Base):
     __tablename__ = "flavor_libcloud"
 
-    __category__ = "undefined"
     __kind__ = 'flavor'
     __provider__ = "libcloud"
 
@@ -86,7 +84,6 @@ class FLAVOR_LIBCLOUD(CloudmeshMixin, CloudmeshDatabase.Base):
 class VM_LIBCLOUD(CloudmeshMixin, CloudmeshDatabase.Base):
     __tablename__ = "vm_libcloud"
 
-    __category__ = "undefined"
     __kind__ = 'vm'
     __provider__ = "libcloud"
 

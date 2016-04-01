@@ -37,7 +37,6 @@ class CloudmeshMixin(object):
         self.user = kwargs.get('user') or CloudmeshDatabase.user
         self.name = kwargs['name']
         self.label = kwargs['name']
-        self.category = self.__category__
         self.kind = self.__kind__
         self.provider = self.__provider__
 
@@ -136,13 +135,13 @@ class CloudmeshDatabase(object):
         print()
         print("Info")
         print()
-        print("{:<20} {:<15} {:<15} {:<4}".format("tablename", "category", "kind", "count"))
+        print("{:<20} {:<15} {:<15} {:<4}".format("tablename", "provider", "kind", "count"))
         print(70 * "=")
 
         for t in cls.tables:
             if kind is None or t.__kind__ in kind:
                 count = cls.session.query(t).count()
-                print("{:<20} {:<15} {:<15} {:<4}".format(t.__tablename__, t.__category__, t.__kind__, count))
+                print("{:<20} {:<15} {:<15} {:<4}".format(t.__tablename__, t.__provider__, t.__kind__, count))
         print()
 
     @classmethod
@@ -161,11 +160,10 @@ class CloudmeshDatabase(object):
                 return check == category
 
         for t in cls.tables:
-            test_category = valid(category, t.__category__)
-            test_provider = valid(category, t.__category__)
+            test_provider = valid(provider, t.__provider__)
             test_kind = valid(kind, t.__kind__)
 
-            if test_category and test_provider and test_kind:
+            if test_provider and test_kind:
                 return t
         ValueError("ERROR: unkown table {} {}".format(provider, kind))
 
@@ -182,28 +180,27 @@ class CloudmeshDatabase(object):
 
     @classmethod
     def all(cls,
-            category=None,
-            provider=None,
+            provider='general',
             kind=None,
             table=None):
 
         t = table
 
-        if category is not None and kind is not None:
-            t = cls.table(category=category, kind=kind)
+        if provider is not None and kind is not None:
+            t = cls.table(provider=provider, kind=kind)
             data = {
-                "category": category,
+                "provider": provider,
                 "kind": kind,
             }
 
-        elif category is None and kind is not None:
+        elif provider is None and kind is not None:
             t = cls.table(kind=kind)
             data = {
                 "kind": kind,
             }
 
         else:
-            ValueError("find is improperly used category={category} kind={kind}"
+            ValueError("find is improperly used provider={provider} kind={kind}"
                        .format(**data))
         result = cls.session.query(t).all()
         return cls.to_list(result)
@@ -211,7 +208,7 @@ class CloudmeshDatabase(object):
     @classmethod
     def find(cls,
              scope='first',
-             category='general',
+             provider=None,
              kind=None,
              output='dict',
              table=None,
@@ -232,16 +229,16 @@ class CloudmeshDatabase(object):
 
         t = table
 
-        if category is not None and kind is not None:
-            t = cls.table(category=category, kind=kind)
+        if provider is not None and kind is not None:
+            t = cls.table(provider=provider, kind=kind)
         else:
             data = {
-                "category": category,
+                "provider": provider,
                 "kind": kind,
                 "table": table,
                 "args": kwargs
             }
-            ValueError("find is improperly used category={category} kind={kind} table={table} args={args}"
+            ValueError("find is improperly used provider={provider} kind={kind} table={table} args={args}"
                        .format(**data))
         print ("=============")
         print ("QQQQQQ", kwargs)
@@ -319,11 +316,11 @@ class CloudmeshDatabase(object):
 
         if o is None:
             return
-        print("HHHH", o.name, o.category, o.kind, o)
+        print("HHHH", o.name, o.provider, o.kind, o)
         if replace:
             current = cls.find(
                 scope='first',
-                category=o.category,
+                provider=o.provider,
                 kind=o.kind,
                 output='object',
                 name=o.name
@@ -372,7 +369,7 @@ class CloudmeshDatabase(object):
     #
 
     def delete(cls,
-               category=None,
+               provider=None,
                kind=None,
                **kwargs):
         """
@@ -383,14 +380,14 @@ class CloudmeshDatabase(object):
         # BUG does not look for user related data
         # user = self.user or Username()
         #
-        if category is not None and kind is not None:
-            t = cls.table(category=category, kind=kind)
+        if provider is not None and kind is not None:
+            t = cls.table(provider=provider, kind=kind)
         else:
             data = {
-                "category": category,
+                "provider": provider,
                 "kind": kind,
             }
-            ValueError("find is improperly used category={category} kind={kind}"
+            ValueError("find is improperly used provider={provider} kind={kind}"
                        .format(**data))
         if len(kwargs) == 0:
             cls.session.query(t).delete()
@@ -400,7 +397,7 @@ class CloudmeshDatabase(object):
 
     @classmethod
     def update(cls,
-               category=None,
+               provider=None,
                kind=None,
                **kwargs):
         """
@@ -410,14 +407,14 @@ class CloudmeshDatabase(object):
         :return:
         """
         # bug: user = self.user or Username()
-        if category is not None and kind is not None:
-            t = cls.table(category=category, kind=kind)
+        if provider is not None and kind is not None:
+            t = cls.table(provider=provider, kind=kind)
         else:
             data = {
-                "category": category,
+                "provider": provider,
                 "kind": kind,
             }
-            ValueError("find is improperly used category={category} kind={kind}"
+            ValueError("find is improperly used provider={provider} kind={kind}"
                        .format(**data))
         filter = kwargs['filter']
         values = kwargs['update']
@@ -430,11 +427,11 @@ class CloudmeshDatabase(object):
             name,
             attribute,
             value,
-            category=None,
+            provider=None,
             kind=None,
             ):
         print("SSS")
-        if category is None or kind is None:
+        if provider is None or kind is None:
             print("FIND")
             o = cls.filter_by(name=name)
             print("A", o)
@@ -442,7 +439,7 @@ class CloudmeshDatabase(object):
             print("C", o.kind)
 
             cls.update(kind=o.kind,
-                       category=o.category,
+                       provider=o.provider,
                        filter={'name': name},
                        update={'label': 'x',
                                attribute: value}

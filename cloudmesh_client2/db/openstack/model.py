@@ -5,7 +5,6 @@ from sqlalchemy import Column, Date, Integer, String
 # noinspection PyPep8Naming
 class IMAGE_OPENSTACK(CloudmeshMixin, CloudmeshDatabase.Base):
     __tablename__ = "image_openstack"
-    __category__ = "undefined"
     __kind__ = 'image'
     __provider__ = "openstack"
 
@@ -97,8 +96,6 @@ class IMAGE_OPENSTACK(CloudmeshMixin, CloudmeshDatabase.Base):
 # noinspection PyPep8Naming
 class FLAVOR_OPENSTACK(CloudmeshMixin, CloudmeshDatabase.Base):
     __tablename__ = "flavor_openstack"
-
-    __category__ = "undefined"
     __kind__ = 'flavor'
     __provider__ = "openstack"
 
@@ -140,8 +137,6 @@ class FLAVOR_OPENSTACK(CloudmeshMixin, CloudmeshDatabase.Base):
 # noinspection PyPep8Naming
 class VM_OPENSTACK(CloudmeshMixin, CloudmeshDatabase.Base):
     __tablename__ = "vm_openstack"
-
-    __category__ = "undefined"
     __kind__ = 'vm'
     __provider__ = "openstack"
 
