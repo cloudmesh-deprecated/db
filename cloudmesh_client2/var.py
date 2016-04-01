@@ -80,7 +80,7 @@ class Var(object):
 
             else:
                 print ("CREATE")
-                t = cls.cm.table(category=cls.__provider, kind=cls.__kind__)
+                t = cls.cm.table(provider=cls.__provider, kind=cls.__kind__)
                 o = t(name=key, value=value)
                 cls.cm.add(o)
             cls.cm.save()
@@ -99,7 +99,7 @@ class Var(object):
         """
         print ("UUUUU")
         o = cls.cm.find(kind=cls.__kind__,
-                        category=cls.__provider,
+                        provider=cls.__provider,
                         output=output,
                         scope=scope,
                         name=name)
