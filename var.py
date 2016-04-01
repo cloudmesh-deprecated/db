@@ -1,5 +1,6 @@
 from cloudmesh_client2 import Var, VAR
 from cloudmesh_client2 import CloudmeshDatabase
+from cloudmesh_client2 import Printer
 
 cm = CloudmeshDatabase()
 
@@ -13,6 +14,11 @@ for v in range(0,5):
     print ("{}={}".format(o.name, o.value))
 
 result = cm.all(category='general', kind='var')
+
+print (Printer.list(result))
+
+
+
 print (result)
 
 cm.info(kind=["var"])
