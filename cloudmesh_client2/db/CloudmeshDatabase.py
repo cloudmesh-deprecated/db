@@ -146,7 +146,7 @@ class CloudmeshDatabase(object):
         print()
 
     @classmethod
-    def table(cls, category=None, kind=None):
+    def table(cls, category=None, provider=None, kind=None):
         """
 
         :param category:
@@ -154,10 +154,20 @@ class CloudmeshDatabase(object):
         :return: the table class based on a given table name.
                  In case the table does not exist an exception is thrown
         """
+        def valid(category, check):
+            if category is None:
+                return True
+            else:
+                return check == category
+
         for t in cls.tables:
-            if (t.__kind__ == kind) and (t.__category__ == category):
+            test_category = valid(category, t.__category__)
+            test_provider = valid(category, t.__category__)
+            test_kind = valid(kind, t.__kind__)
+
+            if test_category and test_provider and test_kind:
                 return t
-        ValueError("ERROR: unkown table {} {}".format(category, kind))
+        ValueError("ERROR: unkown table {} {}".format(provider, kind))
 
     #
     # SESSION
@@ -172,7 +182,8 @@ class CloudmeshDatabase(object):
 
     @classmethod
     def all(cls,
-            category='general',
+            category=None,
+            provider=None,
             kind=None,
             table=None):
 
@@ -180,11 +191,18 @@ class CloudmeshDatabase(object):
 
         if category is not None and kind is not None:
             t = cls.table(category=category, kind=kind)
-        else:
             data = {
                 "category": category,
                 "kind": kind,
             }
+
+        elif category is None and kind is not None:
+            t = cls.table(kind=kind)
+            data = {
+                "kind": kind,
+            }
+
+        else:
             ValueError("find is improperly used category={category} kind={kind}"
                        .format(**data))
         result = cls.session.query(t).all()
