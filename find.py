@@ -1,6 +1,6 @@
 from pprint import pprint
 
-from cloudmesh_client.db import CloudmeshDatabase
+from cloudmesh_client2.db import CloudmeshDatabase
 
 echo = False
 
