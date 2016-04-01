@@ -24,11 +24,11 @@ cm.info(kind=["var"])
 print (result)
 
 
-Var.set("y", "456")
-Var.set("z", "890")
+Var.set("y", "456", type='int')
+Var.set("z", "890", type='int')
 
 
-Var.set("z", "789")
+Var.set("z", "789", type='int')
 
 result = cm.all(provider='general', kind='var')
 print (result)

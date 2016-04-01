@@ -60,7 +60,7 @@ class Var(object):
     #
 
     @classmethod
-    def set(cls, key, value, user=None):
+    def set(cls, key, value, user=None, type='str'):
         """
         sets the default value for a given category
         :param key: the dictionary key of the value to store it at.
@@ -74,11 +74,12 @@ class Var(object):
                 cls.cm.update(kind=cls.__kind__,
                               provider=cls.__provider__,
                               filter={'name': key},
-                              update={'value': value})
+                              update={'value': value,
+                                      'type': type})
 
             else:
                 t = cls.cm.table(provider=cls.__provider__, kind=cls.__kind__)
-                o = t(name=key, value=value)
+                o = t(name=key, value=value, type=type)
                 cls.cm.add(o)
             cls.cm.save()
         except Exception as e:
