@@ -10,7 +10,6 @@ class COUNTER(CloudmeshMixin, CloudmeshDatabase.Base):
     __provider__ = 'general'
 
     value = Column(Integer)
-    kind = "counter"
     type = Column(String, default=int)
 
     def __init__(self,
@@ -39,7 +38,7 @@ class DEFAULT(CloudmeshMixin, CloudmeshDatabase.Base):
     def __init__(self,
                  name=None,
                  value=None,
-                 type=str,
+                 type='str',
                  user=None):
         super(DEFAULT, self).set_defaults(name=name, user=user)
         self.type = type or str
@@ -63,11 +62,9 @@ class VAR(CloudmeshMixin, CloudmeshDatabase.Base):
     def __init__(self,
                  name=None,
                  value=None,
-                 category="var",
                  type="str",
                  user=None):
         super(VAR, self).set_defaults(name=name, user=user)
-        self.category = "general"
         self.kind = 'var'
 
         self.type = str(type)
@@ -122,8 +119,6 @@ class KEY(CloudmeshMixin, CloudmeshDatabase.Base):
                  user=None,
                  is_default="False"):
         super(KEY, self).set_defaults(name=name, user=user)
-        self.category = "general"
-        self.kind = 'key'
 
         self.value = value
         self.uri = uri
@@ -151,10 +146,6 @@ class GROUP(CloudmeshMixin, CloudmeshDatabase.Base):
                  user=None):
         super(GROUP, self).set_defaults(name=name, user=user)
 
-        self.category = "general"
-
-        self.kind = 'group'
-
         self.species = species or "vm"
         self.member = member
 
@@ -178,9 +169,6 @@ class RESERVATION(CloudmeshMixin, CloudmeshDatabase.Base):
                  start=None, end=None, description=None,
                  project=None):
         super(RESERVATION, self).set_defaults(name=name, user=user)
-        self.category = "general"
-        self.kind = 'reservation'
-
         self.hosts = hosts
         self.start_time = start
         self.end_time = end
@@ -235,8 +223,6 @@ class SECGROUPRULE(CloudmeshMixin, CloudmeshDatabase.Base):
                  protocol=None,
                  cidr=None):
         super(SECGROUPRULE, self).set_defaults(name=name, user=user)
-        self.category = "general"
-        self.kind = 'secgrouprule'
         self.uuid = uuid
         self.groupid = groupid
         self.project = project
@@ -275,9 +261,6 @@ class BATCHJOB(CloudmeshMixin, CloudmeshDatabase.Base):
                  **kwargs
                  ):
         super(BATCHJOB, self).set_defaults(name=name, user=user)
-        self.category = "general"
-        self.kind = 'batchjob'
-        self.provider = "slurm"
         self.dir = kwargs.get('dir')
         self.nodes = kwargs.get('nodes')
         self.output_file = kwargs.pop('output_file')

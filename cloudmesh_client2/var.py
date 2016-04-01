@@ -42,21 +42,17 @@ class Var(object):
         :param output: The output format.
         :return:
         """
-        print ("KKKKK")
         if order is None:
             order, header = None, None
             # order, header = Attributes(cls.__kind__, provider=cls.__provider__)
         try:
-            print ("search")
             result = cls.cm.all(category=cls.__category__, kind=cls.__kind__)
-            print ("ok")
-            print ("LLLL", result, cls.__category__, cls.__kind__)
 
             return (Printer.list_printer(result,
                                          order=order,
                                          output=output))
         except:
-            Console.error("?")
+            Console.error("Error creating list")
             return None
 
     #
@@ -74,13 +70,16 @@ class Var(object):
         """
         try:
             o = cls.get(name=key)
+            print ("------PPPP", o)
             if o is not None:
+                print ("UPDATE")
                 cls.cm.update(kind=cls.__kind__,
                               category=cls.__category__,
                               filter={'name': key},
                               update={'value': value})
 
             else:
+                print ("CREATE")
                 t = cls.cm.table(category=cls.__category__, kind=cls.__kind__)
                 o = t(name=key, value=value)
                 cls.cm.add(o)
@@ -98,11 +97,13 @@ class Var(object):
         :param category: The category
         :return:
         """
+        print ("UUUUU")
         o = cls.cm.find(kind=cls.__kind__,
                         category=cls.__category__,
                         output=output,
                         scope=scope,
                         name=name)
+        print ("WWWWW")
         return o
 
 

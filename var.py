@@ -5,12 +5,12 @@ cm = CloudmeshDatabase()
 
 cm.info(kind=["var"])
 
-o = VAR(name="y", value="123")
+for v in range(0,5):
 
-print (o)
-
-cm.add(o)
-print ("{}={}".format(o.name, o.value))
+    o = VAR(name="a_{}".format(v), value=v)
+    print (o)
+    cm.add(o)
+    print ("{}={}".format(o.name, o.value))
 
 result = cm.all(category='general', kind='var')
 print (result)
@@ -19,15 +19,15 @@ cm.info(kind=["var"])
 
 
 Var.set("y", "456")
-# Var.set("z", "789")
+#Var.set("z", "789")
 
 result = cm.all(category='general', kind='var')
 print (result)
 
 
-r = Var.get("y")
+#r = Var.get("y")
 
-print ("RRRR", r.value)
+#print ("RRRR", r.value)
 
 
 
