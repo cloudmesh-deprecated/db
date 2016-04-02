@@ -111,6 +111,7 @@ Default.set("group", "g")
 Default.set("key", "k")
 Default.set("debug", "True")
 Default.set("refresh", "True")
+Default.set("loglevel", "debug")
 
 print(Default.refresh)
 

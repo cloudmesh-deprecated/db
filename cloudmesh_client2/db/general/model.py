@@ -38,12 +38,13 @@ class DEFAULT(CloudmeshMixin, CloudmeshDatabase.Base):
                  name=None,
                  value=None,
                  type="str",
+                 category='general',
                  user=None):
         super(DEFAULT, self).set_defaults(name=name, user=user)
 
         self.type = str(type)
         self.value = str(value)
-        self.category = 'general'
+        self.category = category
         self.kind = 'default'
 
 

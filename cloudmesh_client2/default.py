@@ -100,7 +100,7 @@ class Default(object):
 
             else:
                 t = cls.cm.table(provider=cls.__provider__, kind=cls.__kind__)
-                o = t(name=key, value=value, type=type, user=user)
+                o = t(name=key, value=value, type=type, user=user, category=category)
                 cls.cm.add(o)
             cls.cm.save()
         except Exception as e:
@@ -108,7 +108,7 @@ class Default(object):
 
 
     @classmethod
-    def get(cls, name=None):
+    def get(cls, name=None, category='default'):
         o = cls.cm.find(provider="general",
                         kind="default",
                         scope="first",
@@ -118,7 +118,17 @@ class Default(object):
 
         return (o.value)
 
+    @classmethod
+    def delete(cls, name):
+        cls.cm.delete(name=name, provider=cls.__provider__, kind=cls.__kind__)
 
+    @classmethod
+    def clear(cls):
+        """
+        deletes all default values in the database.
+        :return:
+        """
+        cls.cm.delete(provider=cls.__provider__, kind=cls.__kind__)
 
     @readable_classproperty
     def cloud(cls):
@@ -159,20 +169,24 @@ class Default(object):
     @readable_classproperty
     def cluster(cls):
         return cls.get(name="cluster")
-    '''
+
+    @readable_classproperty
+    def loglevel(cls):
+        return cls.get(name="loglevel")
 
     @classmethod
-    def delete(cls, name):
-        cls.cm.delete(name=name, provider=cls.__provider__, kind=cls.__kind__)
-
-    @classmethod
-    def clear(cls):
-        """
-        deletes all default values in the database.
-        :return:
-        """
-        cls.cm.delete(provider=cls.__provider__, kind=cls.__kind__)
-
+    def set_loglevel(cls, level):
+        level = level or 'debug'
+        level = level.lower()
+        if level in ['debug',
+                     'info',
+                     'warnin',
+                     'error',
+                     'critical']:
+            cls.set("loglevel", level)
+        else:
+            Console.error("unkown logging level. Setting to debug.")
+            cls.set("loglevel", 'debug')
 
     @classmethod
     def set_cloud(cls, value):
@@ -181,8 +195,7 @@ class Default(object):
         :param value: the cloud as defined in cloudmesh.yaml
         :return:
         """
-        cls.set("cloud", value, category="general")
-
+        cls.set("cloud", value)
 
     @classmethod
     def set_vm(cls, value):
@@ -191,11 +204,7 @@ class Default(object):
         :param value: the cloud as defined in cloudmesh.yaml
         :return:
         """
-        cls.set("last_vm_name", value, category="general")
-
-    #
-    # Set the default image
-    #
+        cls.set("vm", value)
 
     @classmethod
     def set_image(cls, value, category):
@@ -215,12 +224,8 @@ class Default(object):
         :return:
         """
         if category is None:
-            category = cls.get_cloud()
-        return cls.get("image", category)
-
-    #
-    # Set the default flavor
-    #
+            category = cls.cloud
+        return cls.get("image", category=category)
 
     @classmethod
     def set_flavor(cls, value, category):
@@ -240,12 +245,8 @@ class Default(object):
         :return:
         """
         if category is None:
-            category = cls.get_cloud()
-        return cls.get("flavor", category)
-
-    #
-    # Set the default group
-    #
+            category = cls.cloud
+        return cls.get(name="flavor", category=category)
 
     @classmethod
     def set_group(cls, value):
@@ -254,12 +255,8 @@ class Default(object):
         :param value: the group name
         :return:
         """
-        cls.set("group", value, category="general")
+        cls.set("group", value)
 
-
-    #
-    # Set the default key
-    #
 
     @classmethod
     def set_key(cls, name):
@@ -267,11 +264,7 @@ class Default(object):
         :param name: the key name
         :return:
         """
-        cls.set("key", name, category="general")
-
-    #
-    # Set the default cluster
-    #
+        cls.set("key", name)
 
     @classmethod
     def set_cluster(cls, value):
@@ -280,12 +273,7 @@ class Default(object):
         :param value: the cluster name as defined in the cloudmesh yaml file.
         :return:
         """
-        cls.set("cluster", value, category="general")
-
-
-    #
-    # Set the default key
-    #
+        cls.set("cluster", value)
 
     @classmethod
     def set_debug(cls, value):
@@ -294,11 +282,7 @@ class Default(object):
         :param value: True/False
         :return:
         """
-        cls.set("debug", value, category="general")
-
-    #
-    # Set the default for refresh
-    #
+        cls.set("debug", value)
 
     @classmethod
     def set_refresh(cls, value):
@@ -307,21 +291,7 @@ class Default(object):
         :param value:
         :return:
         """
-        cls.set("refresh", value, "general")
-
-    @classmethod
-    def refresh(cls):
-        """
-        :return: "on" if refresh is True, "off" otherwise
-        """
-        try:
-            value = cls.get_refresh()
-        except:
-            cls.set_refresh("on")
-            value = "on"
-        return value == "on"
-
-    # set default for timer
+        cls.set("refresh", value)
 
     @classmethod
     def set_timer(cls, value):
@@ -330,29 +300,10 @@ class Default(object):
         :param value:
         :return:
         """
-        cls.set("timer", value, "general")
+        cls.set("timer", value)
 
-    @classmethod
-    def get_timer(cls):
-        """
-        gets the timer
-        :return: "on" if timer is True, "off" otherwise
-        """
-        try:
-            value = cls.get("timer", "general")
-        except:
-            cls.set_timer("off")
-            value = "off"
-        return value
 
-    @classmethod
-    def timer(cls):
-        """
-        :return: "on" if timer is True, "off" otherwise
-        """
-        value = cls.get_timer()
-        return value == "on"
-
+    '''
     @classmethod
     def load(cls, filename):
 
