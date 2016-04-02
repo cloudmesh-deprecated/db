@@ -156,23 +156,10 @@ class Default(object):
     def debug(cls):
         return bool(cls.get(name="debug"))
 
+    @readable_classproperty
+    def cluster(cls):
+        return cls.get(name="cluster")
     '''
-    @classmethod
-    def get(cls, name=None):
-        """
-        returns the value of the first objects matching the key
-        with the given category.
-
-        :param key: The dictionary key
-        :param category: The category
-        :return:
-        """
-        print ("YYYY")
-        o = cls.cm.find(category="general",
-                        kind="default",
-                        name=name)
-
-        return o.value
 
     @classmethod
     def delete(cls, name):
@@ -186,17 +173,6 @@ class Default(object):
         """
         cls.cm.delete(provider=cls.__provider__, kind=cls.__kind__)
 
-    #
-    # Set the default category
-    #
-    @classmethod
-    def get_cloud(cls):
-        """
-        returns the cloud in teh category general
-        :return:
-        """
-        o = cls.get("cloud", category="general")
-        return o
 
     @classmethod
     def set_cloud(cls, value):
@@ -207,20 +183,9 @@ class Default(object):
         """
         cls.set("cloud", value, category="general")
 
-    #
-    # Set the default last_vm_name
-    #
-    @classmethod
-    def get_last_vm_name(cls):
-        """
-        returns the last_vm_name in teh category general
-        :return:
-        """
-        o = cls.get("last_vm_name", category="general")
-        return o
 
     @classmethod
-    def set_last_vm_name(cls, value):
+    def set_vm(cls, value):
         """
         sets the cloud in the category general
         :param value: the cloud as defined in cloudmesh.yaml
@@ -291,20 +256,6 @@ class Default(object):
         """
         cls.set("group", value, category="general")
 
-    @classmethod
-    def get_group(cls):
-        """
-        get the default group
-        :return:
-        """
-        try:
-            group = cls.get("group", "general")
-            if group is None:
-                return "default"
-            else:
-                return group
-        except:
-            return "default"
 
     #
     # Set the default key
@@ -317,14 +268,6 @@ class Default(object):
         :return:
         """
         cls.set("key", name, category="general")
-
-    @classmethod
-    def get_key(cls):
-        """
-        get the default key name
-        :return:
-        """
-        return cls.get("key", "general")
 
     #
     # Set the default cluster
@@ -339,14 +282,6 @@ class Default(object):
         """
         cls.set("cluster", value, category="general")
 
-    @classmethod
-    def get_cluster(cls):
-        """
-        gets the default cluster name.
-
-        :return:
-        """
-        return cls.get("cluster", "general")
 
     #
     # Set the default key
@@ -361,21 +296,6 @@ class Default(object):
         """
         cls.set("debug", value, category="general")
 
-    @classmethod
-    def get_debug(cls):
-        """
-        is debugging switched on?
-        :return:
-        """
-        return cls.get("debug", "general")
-
-    @classmethod
-    def debug(cls):
-        """
-        :return: returns True if debugging is on
-        """
-        return cls.get("debug", "general")
-
     #
     # Set the default for refresh
     #
@@ -388,14 +308,6 @@ class Default(object):
         :return:
         """
         cls.set("refresh", value, "general")
-
-    @classmethod
-    def get_refresh(cls):
-        """
-        is refresh switched on?
-        :return:
-        """
-        return cls.get("refresh", "general")
 
     @classmethod
     def refresh(cls):
