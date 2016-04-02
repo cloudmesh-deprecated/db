@@ -8,7 +8,8 @@ from cloudmesh_client.common.ConfigDict import ConfigDict
 
 # from cloudmesh_client.cloud.iaas.CloudProvider import CloudProvider
 from cloudmesh_client.db import CloudmeshDatabase
-
+from cloudmesh_client.shell.console import Console
+from cloudmesh_client.common.dotdict import dotdict
 
 # noinspection PyBroadException
 class Default(ListResource):
@@ -26,9 +27,46 @@ class Default(ListResource):
 
     cm = CloudmeshDatabase()
 
+
     @classmethod
     def list(cls,
              category=None,
+             order=None,
+             header=None,
+             output='table'):
+        """
+        lists the default values in the specified format.
+        TODO: This method has a bug as it uses format and output,
+        only one should be used.
+
+        :param category: the category of the default value. If general is used
+                      it is a special category that is used for global values.
+        :param format: json, table, yaml, dict, csv
+        :param order: The order in which the attributes are returned
+        :param output: The output format.
+        :return:
+        """
+        if order is None:
+            order, header = None, None
+            order = ['user',
+                     'category',
+                     'name',
+                     'value',
+                     'updated_at']
+            # order, header = Attributes(cls.__kind__, provider=cls.__provider__)
+        try:
+            result = cls.cm.all(category=category, kind=cls.__kind__)
+
+            return (Printer.write(result,
+                                  order=order,
+                                  output=output))
+        except:
+            Console.error("Error creating list")
+            return None
+
+    @classmethod
+    def list(cls,
+
              order=None,
              output='table'):
         """
@@ -45,11 +83,7 @@ class Default(ListResource):
 
         if order is None:
             # (order, header) = CloudProvider(category).get_attributes(cls.__kind__)
-            order = ['user',
-                     'category',
-                     'name',
-                     'value',
-                     'updated_at']
+
         try:
             if category is None:
                 d = cls.cm.all(cls.__kind__)

@@ -1,3 +1,6 @@
+from __future__ import print_function
+from ..CloudmeshDatabase import CloudmeshDatabase, CloudmeshMixin
+from sqlalchemy import Column, Date, Integer, String
 '''
 Azure via libcloud
 =====
@@ -34,3 +37,73 @@ Azure Size
 
 
 '''
+
+
+# noinspection PyPep8Naming
+class IMAGE_AZURE(CloudmeshMixin, CloudmeshDatabase.Base):
+    __tablename__ = "image_azure"
+
+    __kind__ = 'image'
+    __provider__ = "azure"
+
+    uuid = Column(String)
+    affinity_group = Column(String)
+    category = Column(String)
+    description = Column(String)
+    location = Column(String)
+    media_link = Column(String)
+    os = Column(String)
+    vm_image = Column(String)
+    id = Column(String)
+
+    def __init__(self,
+                 **kwargs):
+        super(IMAGE_LIBCLOUD, self).set_defaults(**kwargs)
+
+        self.uuid = kwargs.get('uuid')
+        self.affinity_group = kwargs.get('affinity_group')
+        self.category = kwargs.get('category')
+        self.description = kwargs.get('description')
+        self.location = kwargs.get('location')
+        self.media_link = kwargs.get('media_link')
+        self.os = kwargs.get('os')
+        self.vm_image = kwargs.get('vm_image')
+        self.id = kwargs.get('id')
+
+# noinspection PyPep8Naming
+class FLAVOR_AZURE(CloudmeshMixin, CloudmeshDatabase.Base):
+    __tablename__ = "flavor_azure"
+
+    __kind__ = 'flavor'
+    __provider__ = "azure"
+
+    uuid = Column(String)
+    bandwidth = Column(String)
+    disk = Column(String)
+    driver = Column(String)
+    extra = Column(String)
+    cores = Column(String)
+    max_data_disks = Column(String)
+    id = Column(String)
+    name = Column(String)
+    price = Column(String)
+    ram = Column(String)
+
+    def __init__(self,
+                 **kwargs):
+        super(FLAVOR_LIBCLOUD, self).set_defaults(**kwargs)
+
+        self.uuid = kwargs.get('uuid')
+        self.bandwidth = kwargs.get('bandwidth')
+        self.disk = kwargs.get('disk')
+        self.driver = kwargs.get('driver')
+        self.extra = kwargs.get('extra')
+        self.cores = kwargs.get('cores')
+        self.max_data_disks = kwargs.get('max_data_disks')
+        self.id = kwargs.get('id')
+        self.price = kwargs.get('price')
+        self.ram = kwargs.get('ram')
+
+
+
+

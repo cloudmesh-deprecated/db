@@ -100,7 +100,7 @@ pprint(vm)
 vm = cm.filter_by(name="vm_011")
 pprint(vm)
 
-vm = cm.filter_by(label="x", scope='all', id=3)
+vm = cm.filter_by(label="x", scope='all', cm_id=3)
 pprint(vm)
 
 cm.set("vm_002", 'user', 'world')
