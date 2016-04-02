@@ -225,9 +225,6 @@ class CloudmeshDatabase(object):
         :param kwargs:
         :return:
         """
-
-
-
         t = table
 
         if provider is not None and kind is not None:
@@ -239,9 +236,6 @@ class CloudmeshDatabase(object):
                 "table": table,
                 "args": kwargs
             }
-            ValueError("find is improperly used provider={provider} kind={kind} table={table} args={args}"
-                       .format(**data))
-
         elements = cls.session.query(t).filter_by(**kwargs)
 
         if scope == 'first':

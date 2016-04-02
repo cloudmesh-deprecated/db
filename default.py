@@ -1,11 +1,11 @@
+from __future__ import print_function
 from pprint import pprint
-
+from cloudmesh_client2 import Default, DEFAULT
 from cloudmesh_client2.db import CloudmeshDatabase
 from cloudmesh_client2.common.Printer import Printer
 echo = False
 
 cm = CloudmeshDatabase()
-
 
 def populate(cloud, _from, _to, category):
     global cm
@@ -20,108 +20,103 @@ def populate(cloud, _from, _to, category):
 
 populate("general", 0, 10, "default")
 
+#Default.set("cloud", "kilo")
+o = DEFAULT(name="cloud", value="kilo")
+cm.add(o)
 
+# TODO: this next statement does not work
+Default.set("b", "5")
 
 
 defaults = cm.x_find(kind="default", scope="all")
 
 print (Printer.list(defaults,
-                    order=['name', 'value', 'category', 'user']
+                    order=['name', 'value', 'category', 'kind', 'user']
                     ))
 
 
-import sys; sys.exit()
+cloud = cm.find(provider="general",
+                kind="default",
+                scope="first",
+                name="cloud")
+
+print(cloud.value)
+
+print (Default.get(name="cloud"))
+print ("Cloud:", Default.get(name="cloud"))
+
+
+
+
+print ("Cloud:", Default.cloud)
+
 
 cm.info()
 
 
-result = cm.all(provider='openstack', kind='vm')
-# pprint (result)
+result = cm.all(provider='general', kind='default')
+pprint (len(result))
 #assert len(result) == 10
 
-result = cm.all(provider='libcloud', kind='vm')
-# pprint (result)
-# assert len(result) == 10
-
-for name in ["vm_002", "vm_009"]:
-    vm = cm.find(provider="openstack", kind="vm", name=name)
+for name in ["d_002", "d_009"]:
+    vm = cm.find(provider="general", kind="default", name=name)
     pprint(vm)
 
-cm1 = CloudmeshDatabase()
-# cm1.start()
+print ("HHHH")
 
-# print cm, cm1, cm.session == cm1.session
-
-vm = cm1.find(provider="libcloud", kind="vm", name="vm_016")
+vm = cm.x_find(kind="default", scope="first", name="d_007")
 pprint(vm)
 
-vm = cm.x_find(kind="vm", scope="first", name="vm_007")
-pprint(vm)
-
-vm = cm.x_find(kind="vm", scope="all")
+vm = cm.x_find(kind="default", scope="all")
 
 pprint(vm)
 
-cm.delete(kind="vm", provider="openstack", name="vm_003")
-cm.delete(kind="vm", provider="openstack", label="vm_004")
+cm.delete(kind="default", provider="general", name="d_003")
+cm.delete(kind="default", provider="general", label="d_004")
 
 cm.info()
 
-cm.update(kind="vm",
-          provider="openstack",
-          filter={'name': "vm_002"},
+cm.update(kind="default",
+          provider="general",
+          filter={'name': "d_002"},
           update={'label': 'x'}
           )
 
-vm = cm.x_find(kind="vm", scope="first", name="vm_002")
+vm = cm.x_find(kind="default", scope="first", name="d_002")
 pprint(vm)
 
-cm.update(kind="vm",
-          provider="openstack",
-          filter={'name': "vm_002"},
+print ("KKKK")
+cm.update(kind="default",
+          provider="general",
+          filter={'name': "d_002"},
           update={'label': 'x',
-                  'uuid': 'a'}
+                  'value': 'a'}
           )
 
-vm = cm.x_find(kind="vm", scope="first", name="vm_002")
+vm = cm.x_find(kind="default", scope="first", name="d_002")
 pprint(vm)
 
-cm.update(kind="vm",
-          provider="openstack",
-          filter={'name': "vm_002",
-                  'name': "vm_009",},
+cm.update(kind="default",
+          provider="general",
+          filter={'name': "d_002",
+                  'name': "d_009"},
           update={'label': 'x',
-                  'uuid': 'a'}
+                  'value': 'a'}
           )
 
-vm = cm.x_find(kind="vm", scope="first", name="vm_002")
-pprint(vm)
-vm = cm.x_find(kind="vm", scope="first", name="vm_009")
-pprint(vm)
+Default.set("iamge", "i")
+Default.set("flavor", "f")
+Default.set("vm", "v")
+Default.set("group", "g")
+Default.set("key", "k")
+Default.set("debug", "True")
+Default.set("refresh", "True")
 
-cm.set("vm_009", 'user', 'gregor', provider='openstack', kind='vm')
+print(Default.refresh)
 
-vm = cm.x_find(kind="vm", scope="first", name="vm_009")
-pprint(vm)
+defaults = cm.x_find(kind="default", scope="all")
+print(Printer.list(defaults,
+                   order=['name', 'label', 'value', 'category', 'kind', 'user']
+                   ))
 
-vm = cm.filter_by(name="vm_011")
-pprint(vm)
-
-vm = cm.filter_by(label="x", scope='all', cm_id=3)
-pprint(vm)
-
-cm.set("vm_002", 'user', 'world')
-
-vm = cm.x_find(kind="vm", scope="first", name="vm_002")
-pprint(vm)
-
-
-vms = cm.x_find(kind="vm", scope="all")
-print (len(vms))
-
-
-
-print (Printer.list(vms,
-                    order=['name', 'status', 'category', 'user', 'provider', 'kind', 'xx']
-                    ))
-
+# print (Default.list())

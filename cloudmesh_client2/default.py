@@ -3,16 +3,21 @@ from __future__ import print_function
 from cloudmesh_client.common import Printer
 # from cloudmesh_client.db.SSHKeyDBManager import SSHKeyDBManager
 import cloudmesh_client
-from cloudmesh_client.cloud.ListResource import ListResource
 from cloudmesh_client.common.ConfigDict import ConfigDict
 
 # from cloudmesh_client.cloud.iaas.CloudProvider import CloudProvider
-from cloudmesh_client.db import CloudmeshDatabase
+from cloudmesh_client2 import CloudmeshDatabase
 from cloudmesh_client.shell.console import Console
 from cloudmesh_client.common.dotdict import dotdict
 
+class readable_classproperty(object):
+    def __init__(self, f):
+        self.f = f
+    def __get__(self, obj, owner):
+        return self.f(owner)
+
 # noinspection PyBroadException
-class Default(ListResource):
+class Default(object):
     """
     Cloudmesh contains the concept of defaults. Defaults can have
     categories (we will rename cloud to categories). A category can be a
@@ -72,60 +77,84 @@ class Default(ListResource):
     #
     # GENERAL SETTER AND GETTER METHOD
     #
-    '''
+
     @classmethod
-    def set(cls, key, value, category=None, user=None):
+    def set(cls, key, value, category='general', user=None, type='str'):
         """
         sets the default value for a given category
         :param key: the dictionary key of the value to store it at.
         :param value: the value
-        :param category: the name of the category
         :param user: the username to store this default value at.
         :return:
         """
-
         try:
+            o = cls.get(name=key)
+            if o is not None:
+                cls.cm.update(kind=cls.__kind__,
+                              provider=cls.__provider__,
+                              filter={'name': key},
+                              update={'value': value,
+                                      'type': type,
+                                      'user': user,
+                                      'category': category})
 
-            o = cls.get_object(key, category)
-            me = cls.cm.user or user
-            if o is None:
-                o = cls.cm.db_obj_dict(cls.__kind__,
-                                       name=key,
-                                       value=value,
-                                       category=category,
-                                       user=me)
-                cls.cm.add_obj(o)
             else:
-                o.value = value
+                t = cls.cm.table(provider=cls.__provider__, kind=cls.__kind__)
+                o = t(name=key, value=value, type=type, user=user)
                 cls.cm.add(o)
-                # cls.cm.update(o)
             cls.cm.save()
-        except:
-            return None
+        except Exception as e:
+            Console.error("problem setting key value {}={}".format(key, value))
+
 
     @classmethod
-    def get_object(cls, key, category="general"):
-        """
-        returns the first object that matches the key in teh Default
-        database.
-
-        :param key: The dictionary key
-        :param category: The category
-        :return:
-        """
-
-        try:
-            o = cls.cm.find(category=category,
-                            kind=cls.__kind__,
-                            output='object',
-                            name=key,
-                            scope='first')
-            return o
-        except Exception:
+    def get(cls, name=None):
+        o = cls.cm.find(provider="general",
+                        kind="default",
+                        scope="first",
+                        name=name)
+        if o is None:
             return None
 
+        return (o.value)
+
+
+
+    @readable_classproperty
+    def cloud(cls):
+        return cls.get(name="cloud")
+
+    @readable_classproperty
+    def image(cls):
+        return cls.get(name="image", category=cls.Default.cloud)
+
+    @readable_classproperty
+    def flavor(cls):
+        return cls.get(name="flavor", category=cls.Default.cloud)
+
+    @readable_classproperty
+    def lastvm(cls):
+        return cls.get(name="vm")
+
+    @readable_classproperty
+    def group(cls):
+        return cls.get(name="group")
+
+    @readable_classproperty
+    def key(cls):
+        return cls.get(name="key")
+
+    @readable_classproperty
+    def debug(cls):
+        return cls.get(name="debug")
+
+    @readable_classproperty
+    def refresh(cls):
+        return cls.get(name="refresh")
+
+    '''
     @classmethod
-    def get(cls, key, category="general"):
+    def get(cls, name=None):
         """
         returns the value of the first objects matching the key
         with the given category.
@@ -134,31 +163,16 @@ class Default(ListResource):
         :param category: The category
         :return:
         """
+        print ("YYYY")
+        o = cls.cm.find(category="general",
+                        kind="default",
+                        name=name)
 
-        o = cls.cm.find(category=category,
-                        kind=cls.__kind__,
-                        output='dict',
-                        scope='first',
-                        name=key)
-        if o is not None:
-            return o['value']
-        else:
-            return None
+        return o.value
 
     @classmethod
-    def delete(cls, key, category):
-        #
-        # TODO: this is wrong implemented,
-        #
-        try:
-            o = Default.get_object(key, category)
-            if o is not None:
-                cls.cm.delete(o)
-                return "Deletion. ok."
-            else:
-                return None
-        except:
-            return None
+    def delete(cls, name):
+        cls.cm.delete(name=name, provider=cls.__provider__, kind=cls.__kind__)
 
     @classmethod
     def clear(cls):
@@ -166,14 +180,7 @@ class Default(ListResource):
         deletes all default values in the database.
         :return:
         """
-        try:
-            d = cls.cm.all(cls.__kind__)
-            for item in d:
-                name = d[item]["name"]
-                cls.cm.delete_by_name(cls.__kind__, name)
-            cls.cm.save()
-        except:
-            return None
+        cls.cm.delete(provider=cls.__provider__, kind=cls.__kind__)
 
     #
     # Set the default category

@@ -1,3 +1,4 @@
+from __future__ import print_function
 from pprint import pprint
 
 from cloudmesh_client2.db import CloudmeshDatabase

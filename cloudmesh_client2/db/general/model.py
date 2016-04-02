@@ -19,6 +19,7 @@ class COUNTER(CloudmeshMixin, CloudmeshDatabase.Base):
         self.value = int(value)
 
 
+
 class DEFAULT(CloudmeshMixin, CloudmeshDatabase.Base):
     """table to store default values
 
@@ -36,12 +37,14 @@ class DEFAULT(CloudmeshMixin, CloudmeshDatabase.Base):
     def __init__(self,
                  name=None,
                  value=None,
-                 type='str',
+                 type="str",
                  user=None):
         super(DEFAULT, self).set_defaults(name=name, user=user)
+
         self.type = str(type)
         self.value = str(value)
-
+        self.category = 'general'
+        self.kind = 'default'
 
 
 class VAR(CloudmeshMixin, CloudmeshDatabase.Base):

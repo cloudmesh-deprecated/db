@@ -1,3 +1,4 @@
+from __future__ import print_function
 from cloudmesh_client2 import Var, VAR
 from cloudmesh_client2 import CloudmeshDatabase
 from cloudmesh_client2 import Printer
@@ -11,7 +12,7 @@ for v in range(0,5):
     o = VAR(name="a_{}".format(v), value=v)
     print (o)
     cm.add(o)
-    print ("{}={}".format(o.name, o.value))
+    print ("AAA {}={}".format(o.name, o.value))
 
 result = cm.all(provider='general', kind='var')
 
