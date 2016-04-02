@@ -9,23 +9,30 @@ cm = CloudmeshDatabase()
 
 def populate(cloud, _from, _to, category):
     global cm
-    t = CloudmeshDatabase.table(provider=cloud, kind="vm")
+    t = CloudmeshDatabase.table(provider=cloud, kind="default")
     for i in range(_from, _to):
-        name = "vm_" + str(i).zfill(3)
-        print ("N", name, t)
-        vm = t(name=name, category=category)
+        name = "d_" + str(i).zfill(3)
+        value = str(i)
+        print ("N", name, value, t)
+        o = t(name=name, value=value)
+        cm.add(o)
 
-        cm.add(vm)
+
+populate("general", 0, 10, "default")
 
 
-populate("openstack", 0, 10, "kilo")
-populate("libcloud", 10, 20, "cloud_b")
+
+
+defaults = cm.x_find(kind="default", scope="all")
+
+print (Printer.list(defaults,
+                    order=['name', 'value', 'category', 'user']
+                    ))
+
+
+import sys; sys.exit()
 
 cm.info()
-vms = cm.x_find(kind="vm", scope="all")
-print (Printer.list(vms,
-                    order=['name', 'status', 'category', 'user', 'provider', 'kind', 'xx']
-                    ))
 
 
 result = cm.all(provider='openstack', kind='vm')

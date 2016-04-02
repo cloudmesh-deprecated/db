@@ -39,8 +39,8 @@ class DEFAULT(CloudmeshMixin, CloudmeshDatabase.Base):
                  type='str',
                  user=None):
         super(DEFAULT, self).set_defaults(name=name, user=user)
-        self.type = type or str
-        self.value = self.type(value)
+        self.type = str(type)
+        self.value = str(value)
 
 
 

@@ -55,7 +55,10 @@ class Default(ListResource):
                      'updated_at']
             # order, header = Attributes(cls.__kind__, provider=cls.__provider__)
         try:
-            result = cls.cm.all(category=category, kind=cls.__kind__)
+            if category is None:
+                result = cls.cm.all(cls.__kind__)
+            else:
+                result = cls.cm.all(category=category, kind=cls.__kind__)
 
             return (Printer.write(result,
                                   order=order,
@@ -64,41 +67,12 @@ class Default(ListResource):
             Console.error("Error creating list")
             return None
 
-    @classmethod
-    def list(cls,
 
-             order=None,
-             output='table'):
-        """
-        lists the default values in the specified format.
-        TODO: This method has a bug as it uses format and output,
-        only one should be used.
-
-        :param category: the category of the default value. If general is used
-                      it is a special category that is used for global values.
-        :param order: The order in which the attributes are returned
-        :param output: The output format. json, table, yaml, dict, csv
-        :return:
-        """
-
-        if order is None:
-            # (order, header) = CloudProvider(category).get_attributes(cls.__kind__)
-
-        try:
-            if category is None:
-                d = cls.cm.all(cls.__kind__)
-            else:
-                d = cls.cm.find(cls.__kind__, category=category)
-            return (Printer.dict_printer(d,
-                                         order=order,
-                                         output=output))
-        except:
-            return None
 
     #
     # GENERAL SETTER AND GETTER METHOD
     #
-
+    '''
     @classmethod
     def set(cls, key, value, category=None, user=None):
         """
@@ -499,3 +473,4 @@ class Default(ListResource):
         # Set the key only if there is no existing value in the DB.
         if exist_key is None:
             Default.set_key(name)
+    '''
