@@ -146,11 +146,15 @@ class Default(object):
 
     @readable_classproperty
     def debug(cls):
-        return cls.get(name="debug")
+        return bool(cls.get(name="debug"))
 
     @readable_classproperty
     def refresh(cls):
-        return cls.get(name="refresh")
+        return bool(cls.get(name="refresh"))
+
+    @readable_classproperty
+    def debug(cls):
+        return bool(cls.get(name="debug"))
 
     '''
     @classmethod
